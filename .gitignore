@@ -28,3 +28,4 @@ deps/lua/src/liblua.a
 .prerequisites
 *.dSYM
 Makefile.dep
+redis5.0.5.si4project/*
