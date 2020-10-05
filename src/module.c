@@ -7269,7 +7269,9 @@ void moduleInitModulesSystem(void) {
     pthread_mutex_lock(&moduleGIL);
 }
 
-/* Load all the modules in the server.loadmodule_queue list, which is
+/* 
+ * 在server.loadmodule_queue列表中加载所有模块,
+Load all the modules in the server.loadmodule_queue list, which is
  * populated by `loadmodule` directives in the configuration file.
  * We can't load modules directly when processing the configuration file
  * because the server must be fully initialized before loading modules.
