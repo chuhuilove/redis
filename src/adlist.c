@@ -33,7 +33,7 @@
 #include "adlist.h"
 #include "zmalloc.h"
 
-/* Create a new list. The created list can be freed with
+/* 创建一个新list.创建的list可以使用AlFreeList()来释放， The created list can be freed with
  * AlFreeList(), but private value of every node need to be freed
  * by the user before to call AlFreeList().
  *
