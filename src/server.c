@@ -4778,7 +4778,9 @@ void sendChildCOWInfo(int ptype, char *pname) {
 
 void memtest(size_t megabytes, int passes);
 
-/* Returns 1 if there is --sentinel among the arguments or if
+/* 
+ * 检查是否是哨兵模式
+ * Returns 1 if there is --sentinel among the arguments or if
  * argv[0] contains "redis-sentinel". */
 int checkForSentinelMode(int argc, char **argv) {
     int j;
@@ -4789,7 +4791,8 @@ int checkForSentinelMode(int argc, char **argv) {
     return 0;
 }
 
-/* Function called at startup to load RDB or AOF file in memory. */
+/* 
+ * 服务启动时调用的函数,用于将RDB或AOF文件加载到内存中.*/
 void loadDataFromDisk(void) {
     long long start = ustime();
     if (server.aof_state == AOF_ON) {

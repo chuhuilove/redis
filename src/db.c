@@ -35,7 +35,7 @@
 #include <ctype.h>
 
 /*-----------------------------------------------------------------------------
- * C-level DB API
+ * C-level DB API C语言级别的 DB API
  *----------------------------------------------------------------------------*/
 
 int keyIsExpired(redisDb *db, robj *key);
@@ -1244,7 +1244,7 @@ void propagateExpire(redisDb *db, robj *key, int lazy) {
     decrRefCount(argv[1]);
 }
 
-/* Check if the key is expired. */
+/* 检查Key是否过期.Check if the key is expired. */
 int keyIsExpired(redisDb *db, robj *key) {
     mstime_t when = getExpire(db,key);
     mstime_t now;

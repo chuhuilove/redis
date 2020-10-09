@@ -54,8 +54,8 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-typedef long long mstime_t; /* millisecond time type. */
-typedef long long ustime_t; /* microsecond time type. */
+typedef long long mstime_t; /* 毫秒时间类型. */
+typedef long long ustime_t; /* 微秒时间类型. */
 
 #include "ae.h"      /* Event driven programming library */
 #include "sds.h"     /* Dynamic safe strings */
