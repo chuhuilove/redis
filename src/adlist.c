@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include "adlist.h"
 #include "zmalloc.h"
+#include "redislog.h"
 
 
 
@@ -46,6 +47,7 @@ list *listCreate(void)
 {
     struct list *list;
 
+	cyziServerLog(1,"this is success.................by cyzi");
     if ((list = zmalloc(sizeof(*list))) == NULL)
         return NULL;
     list->head = list->tail = NULL;

@@ -12,7 +12,7 @@ void cyziServerLog(int loglevel,char * message,...){
 	   vsnprintf(msg, sizeof(msg), message, ap);
 	   va_end(ap);
 	
-	   serverLogRaw(loglevel,msg);
+	   cyziServerLogRaw(loglevel,msg);
 
 }
 
@@ -22,7 +22,7 @@ void cyziServerLogRaw(int level, const char *msg) {
 	  FILE *fp;
 	  char buf[64];
 	  int rawmode = (level & (1<<10));
-	  int log_to_stdout = "" == '\0';
+	  int log_to_stdout =1;
 	
 	  level &= 0xff; /* clear flags */
 	
