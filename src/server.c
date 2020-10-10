@@ -1050,6 +1050,7 @@ void serverLogRaw(int level, const char *msg) {
     fflush(fp);
 
     if (!log_to_stdout) fclose(fp);
+	if (server.syslog_enabled) syslog(syslogLevelMap[level], "%s", msg);
 
 }
 
