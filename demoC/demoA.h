@@ -1,0 +1,4 @@
+
+int demoAValue;
+
+void printDemoA();
