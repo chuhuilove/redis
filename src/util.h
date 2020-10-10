@@ -46,11 +46,6 @@ typedef enum {
 } ld2string_mode;
 
 
-extern time_t cyziTimezone; 
-extern int cyzi_daylight_active; 
-extern int cyzi_sentinel_mode;	
-extern  char *cyzi_masterhost=NULL; 
-extern pid_t cyzi_pid;			  
 
 
 

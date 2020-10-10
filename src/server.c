@@ -33,7 +33,7 @@
 #include "bio.h"
 #include "latency.h"
 #include "atomicvar.h"
-
+#include "util.h" 
 #include <time.h>
 #include <signal.h>
 #include <sys/wait.h>
