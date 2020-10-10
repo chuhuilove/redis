@@ -1754,8 +1754,13 @@ void updateCachedTime(int update_daylight_info) {
         struct tm tm;
         time_t ut = server.unixtime;
         localtime_r(&ut,&tm);
+		
+			
         server.daylight_active = tm.tm_isdst;
+		extern int cyzi_daylight_active; 
 		cyzi_daylight_active=server.daylight_active;
+
+	
     }
 }
 
@@ -2290,6 +2295,8 @@ void initServerConfig(void) {
                                       This value may be used before the server
                                       is initialized. */
     server.timezone = getTimeZone(); /* Initialized by tzset(). */
+
+	extern time_t cyziTimezone; 
 	cyziTimezone=server.timezone;
     server.configfile = NULL;
     server.executable = NULL;
@@ -2338,7 +2345,11 @@ void initServerConfig(void) {
 
     /* Replication related */
     server.masterauth = NULL;
+	
     server.masterhost = NULL;
+	extern char *cyzi_masterhost; 
+	cyzi_masterhost=server.masterhost;
+	
     server.masterport = 6379;
     server.master = NULL;
     server.cached_master = NULL;
@@ -2707,7 +2718,9 @@ void initServer(void) {
     /* Initialization after setting defaults from the config system. */
     server.aof_state = server.aof_enabled ? AOF_ON : AOF_OFF;
     server.hz = server.config_hz;
+	
     server.pid = getpid();
+	extern pid_t cyzi_pid; 	
 	cyzi_pid= server.pid;
 	
     server.current_client = NULL;
@@ -4955,8 +4968,12 @@ int main(int argc, char **argv) {
     uint8_t hashseed[16];
     getRandomBytes(hashseed,sizeof(hashseed));
     dictSetHashFunctionSeed(hashseed);
+	
     server.sentinel_mode = checkForSentinelMode(argc,argv);
+	extern int cyzi_sentinel_mode; 
 	cyzi_sentinel_mode=server.sentinel_mode;
+
+	
     initServerConfig();
     ACLInit(); /* The ACL subsystem must be initialized ASAP because the
                   basic networking code and client creation depends on it. */

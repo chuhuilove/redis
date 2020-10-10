@@ -402,7 +402,11 @@ void loadServerConfigFromString(char *config) {
         } else if ((!strcasecmp(argv[0],"slaveof") ||
                     !strcasecmp(argv[0],"replicaof")) && argc == 3) {
             slaveof_linenum = linenum;
+			
             server.masterhost = sdsnew(argv[1]);
+			extern char *cyzi_masterhost; 
+			cyzi_masterhost=server.masterhost;
+			
             server.masterport = atoi(argv[2]);
             server.repl_state = REPL_STATE_CONNECT;
         } else if (!strcasecmp(argv[0],"requirepass") && argc == 2) {

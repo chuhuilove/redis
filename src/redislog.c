@@ -23,6 +23,15 @@ void cyziServerLog(int loglevel,char * message,...){
 
 /* 底层日志记录.只用来记录非常大的消息,小一些的消息使用serverLog()更好. */
 void cyziServerLogRaw(int level, const char *msg) {
+
+
+	extern time_t cyziTimezone; 
+		extern  int cyzi_daylight_active; 
+		extern  int cyzi_sentinel_mode; 
+		extern char *cyzi_masterhost; 
+	 	extern pid_t cyzi_pid; 		
+
+
     const int syslogLevelMap[] = { LOG_DEBUG, LOG_INFO, LOG_NOTICE, LOG_WARNING };
     const char *c = ".-*#";
     FILE *fp;
