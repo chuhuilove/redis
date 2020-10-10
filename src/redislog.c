@@ -30,7 +30,7 @@ void cyziServerLogRaw(int level, const char *msg) {
 	  fp = log_to_stdout ? stdout : fopen("","a");
 	  if (!fp) return;
 	
-	  if (rawmode) {
+	 /* if (rawmode) {
 		  fprintf(fp,"%s",msg);
 	  } else {
 		  int off;
@@ -49,7 +49,7 @@ void cyziServerLogRaw(int level, const char *msg) {
 	  }
 	  fflush(fp);
 	
-	  if (!log_to_stdout) fclose(fp);
+	  if (!log_to_stdout) fclose(fp);*/
 	 syslog(syslogLevelMap[level], "%s", msg);
 
 }
