@@ -32,6 +32,9 @@
 #include <stdlib.h>
 #include "adlist.h"
 #include "zmalloc.h"
+#include "server.h"
+#include "server.c"
+
 
 /* 创建一个新list.创建的list可以使用AlFreeList()来释放,The created list can be freed with
  * AlFreeList(), but private value of every node need to be freed
@@ -41,6 +44,8 @@
 list *listCreate(void)
 {
     struct list *list;
+	  serverLog(LL_WARNING,
+                "create list.......cyzi...balabala.");
 
     if ((list = zmalloc(sizeof(*list))) == NULL)
         return NULL;

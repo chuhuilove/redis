@@ -72,15 +72,15 @@ double R_Zero, R_PosInf, R_NegInf, R_Nan;
 struct redisServer server; /* Server global state */
 volatile unsigned long lru_clock; /* Server global current LRU time. */
 
-/* Our command table.
+/* 命令表.
  *
- * Every entry is composed of the following fields:
+ * 每个条目都由下面的几个字段组成:
  *
- * name:        A string representing the command name.
+ * name:        表示命令名称的字符串.
  *
- * function:    Pointer to the C function implementing the command.
+ * function:    指向实现命令的C函数的指针.
  *
- * arity:       Number of arguments, it is possible to use -N to say >= N
+ * arity:       参数个数, it is possible to use -N to say >= N
  *
  * sflags:      Command flags as string. See below for a table of flags.
  *
@@ -180,13 +180,9 @@ volatile unsigned long lru_clock; /* Server global current LRU time. */
  */
 
 struct redisCommand redisCommandTable[] = {
-    {"module",moduleCommand,-2,
-     "admin no-script",
-     0,NULL,0,0,0,0,0,0},
+    {"module",moduleCommand,-2,"admin no-script",0,NULL,0,0,0,0,0,0},
 
-    {"get",getCommand,2,
-     "read-only fast @string",
-     0,NULL,1,1,1,0,0,0},
+    {"get",getCommand,2,"read-only fast @string",0,NULL,1,1,1,0,0,0},
 
     /* Note that we can't flag set as fast, since it may perform an
      * implicit DEL of a large key. */
@@ -998,17 +994,11 @@ struct redisCommand redisCommandTable[] = {
      "admin no-script ok-loading ok-stale",
      0,NULL,0,0,0,0,0,0},
 
-    {"lolwut",lolwutCommand,-1,
-     "read-only fast",
-     0,NULL,0,0,0,0,0,0},
+    {"lolwut",lolwutCommand,-1,"read-only fast",0,NULL,0,0,0,0,0,0},
 
-    {"acl",aclCommand,-2,
-     "admin no-script no-slowlog ok-loading ok-stale",
-     0,NULL,0,0,0,0,0,0},
+    {"acl",aclCommand,-2,"admin no-script no-slowlog ok-loading ok-stale",0,NULL,0,0,0,0,0,0},
 
-    {"stralgo",stralgoCommand,-2,
-     "read-only @string",
-     0,lcsGetKeys,0,0,0,0,0,0}
+    {"stralgo",stralgoCommand,-2,"read-only @string",0,lcsGetKeys,0,0,0,0,0,0}
 };
 
 /*============================ Utility functions ============================ */
