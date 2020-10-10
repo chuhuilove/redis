@@ -5,17 +5,14 @@
 #include <stdio.h>
 
 
-void cyziServerLog(int loglevel, char * message){
+void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
 	   char msg[CYZI_LOG_MAX_LEN];
-	
-
-	
-	   va_start(ap, fmt);
-	   vsnprintf(msg, sizeof(msg), fmt, ap);
+	   va_start(ap, message);
+	   vsnprintf(msg, sizeof(msg), message, ap);
 	   va_end(ap);
 	
-	   serverLogRaw(level,msg);
+	   serverLogRaw(loglevel,msg);
 
 }
 
