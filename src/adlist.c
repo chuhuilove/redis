@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include "adlist.h"
 #include "zmalloc.h"
-#include <stdarg.h>
+
 
 
 
@@ -45,7 +45,6 @@
 list *listCreate(void)
 {
     struct list *list;
-	zdlistServerLog("start create adlist.............by cyzi ");
 
     if ((list = zmalloc(sizeof(*list))) == NULL)
         return NULL;
@@ -57,14 +56,7 @@ list *listCreate(void)
     return list;
 }
 
-void zdlistServerLog(const char *fmt, ...) {
-    va_list ap;
-    char msg[1024];
 
-    va_start(ap, fmt);
-    vsnprintf(msg, sizeof(msg), fmt, ap);
-    va_end(ap);
-}
 
 
 /* Remove all the elements from the list without destroying the list itself. */
