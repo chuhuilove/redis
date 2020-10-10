@@ -72,6 +72,8 @@ double R_Zero, R_PosInf, R_NegInf, R_Nan;
 struct redisServer server; /* Server global state */
 volatile unsigned long lru_clock; /* Server global current LRU time. */
 
+
+
 /* 命令表.
  *
  * 每个条目都由下面的几个字段组成:
@@ -1048,7 +1050,7 @@ void serverLogRaw(int level, const char *msg) {
     fflush(fp);
 
     if (!log_to_stdout) fclose(fp);
-    if (server.syslog_enabled) syslog(syslogLevelMap[level], "%s", msg);
+
 }
 
 /* Like serverLogRaw() but with printf-alike support. This is the function that
@@ -1753,6 +1755,7 @@ void updateCachedTime(int update_daylight_info) {
         time_t ut = server.unixtime;
         localtime_r(&ut,&tm);
         server.daylight_active = tm.tm_isdst;
+		cyzi_daylight_active=server.daylight_active;
     }
 }
 
@@ -2287,6 +2290,7 @@ void initServerConfig(void) {
                                       This value may be used before the server
                                       is initialized. */
     server.timezone = getTimeZone(); /* Initialized by tzset(). */
+	cyziTimezone=server.timezone;
     server.configfile = NULL;
     server.executable = NULL;
     server.arch_bits = (sizeof(long) == 8) ? 64 : 32;
@@ -2704,6 +2708,8 @@ void initServer(void) {
     server.aof_state = server.aof_enabled ? AOF_ON : AOF_OFF;
     server.hz = server.config_hz;
     server.pid = getpid();
+	cyzi_pid= server.pid;
+	
     server.current_client = NULL;
     server.fixed_time_expire = 0;
     server.clients = listCreate();
@@ -4950,6 +4956,7 @@ int main(int argc, char **argv) {
     getRandomBytes(hashseed,sizeof(hashseed));
     dictSetHashFunctionSeed(hashseed);
     server.sentinel_mode = checkForSentinelMode(argc,argv);
+	cyzi_sentinel_mode=server.sentinel_mode;
     initServerConfig();
     ACLInit(); /* The ACL subsystem must be initialized ASAP because the
                   basic networking code and client creation depends on it. */

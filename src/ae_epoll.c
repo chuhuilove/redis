@@ -30,7 +30,6 @@
 
 
 #include <sys/epoll.h>
-#include "server.h"
 
 
 typedef struct aeApiState {
@@ -49,7 +48,6 @@ static int aeApiCreate(aeEventLoop *eventLoop) {
         return -1;
     }
     state->epfd = epoll_create(1024); /* 1024 is just a hint for the kernel */
-	serverLog(LL_WARNING,"cyzi.........log.........demo aeApi Create..................");
     if (state->epfd == -1) {
         zfree(state->events);
         zfree(state);

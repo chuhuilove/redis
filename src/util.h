@@ -45,6 +45,20 @@ typedef enum {
     LD_STR_HEX       /* %La */
 } ld2string_mode;
 
+
+extern time_t cyziTimezone; 
+extern int cyzi_daylight_active; 
+extern int cyzi_sentinel_mode;	
+extern  char *cyzi_masterhost=NULL; 
+extern pid_t cyzi_pid;			  
+
+
+
+
+
+
+
+unsigned long getTimeZone(void);
 int stringmatchlen(const char *p, int plen, const char *s, int slen, int nocase);
 int stringmatch(const char *p, const char *s, int nocase);
 int stringmatchlen_fuzz_test(void);
