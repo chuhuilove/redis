@@ -30,6 +30,7 @@
 
 #ifndef __ADLIST_H__
 #define __ADLIST_H__
+#include "server.h"
 
 /* Node, List, and Iterator are the only data structures used currently. */
 /*双向链表的节点*/

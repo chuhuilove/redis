@@ -4907,9 +4907,7 @@ int iAmMaster(void) {
 
 
 int main(int argc, char **argv) {
-	cyziServerLog(3,"11111-----start server...............cyzi.............Test log.....");
-
-    struct timeval tv;
+ 	    struct timeval tv;
     int j;
 
 #ifdef REDIS_TEST
