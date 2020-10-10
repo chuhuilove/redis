@@ -7,6 +7,7 @@
 int main(){
 
 demoA=10;
+
 printDemoA();
 demoA=1000;
 printDemoAForB();

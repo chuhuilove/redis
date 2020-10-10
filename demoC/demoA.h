@@ -1,4 +1,4 @@
 
-int demoAValue;
+extern int demoAValue;
 
 void printDemoA();
