@@ -4,13 +4,13 @@
 #include "demoA.h"
 #include "demoB.h"
 
-extern int demoA;
+
 
 int main(){
-
-demoA=10;
+extern int demoAValue;
+demoAValue=10;
 printDemoA();
-demoA=1000;
+demoAValue=1000;
 printDemoAForB();
 return 0;
 
