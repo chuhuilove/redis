@@ -45,7 +45,7 @@
 list *listCreate(void)
 {
     struct list *list;
-	zdlistServerLog("start create adlist.............by cyzi ")
+	zdlistServerLog("start create adlist.............by cyzi ");
 
     if ((list = zmalloc(sizeof(*list))) == NULL)
         return NULL;
