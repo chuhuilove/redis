@@ -31,9 +31,10 @@
 
 #include <stdlib.h>
 #include "adlist.h"
+#include "server.h"
 #include "zmalloc.h"
 #include <stdio.h>
-#include "server.h"
+
 
 
 
