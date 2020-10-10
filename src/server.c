@@ -4907,7 +4907,7 @@ int iAmMaster(void) {
 
 
 int main(int argc, char **argv) {
-	cyziServerLog(1,"11111-----start server...............cyzi.............Test log.....")
+	cyziServerLog(1,"11111-----start server...............cyzi.............Test log.....");
 
     struct timeval tv;
     int j;
