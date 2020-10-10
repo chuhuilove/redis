@@ -49,6 +49,7 @@
 #include <sys/socket.h>
 #include <lua.h>
 #include <signal.h>
+#include "redislog.h"
 
 #ifdef HAVE_LIBSYSTEMD
 #include <systemd/sd-daemon.h>
