@@ -31,7 +31,7 @@
 
 #include <stdlib.h>
 #include "adlist.h"
-#include "server.h"
+
 #include "zmalloc.h"
 #include <stdio.h>
 
@@ -49,8 +49,6 @@
 list *listCreate(void)
 {
     struct list *list;
-
-	  serverLog(LL_WARNING,"cyzi.........log.........demo create list..............");
     if ((list = zmalloc(sizeof(*list))) == NULL)
         return NULL;
     list->head = list->tail = NULL;
