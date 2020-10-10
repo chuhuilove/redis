@@ -54,7 +54,7 @@ void cyziServerLogRaw(int level, const char *msg) {
 
         gettimeofday(&tv,NULL);
         struct tm tm;
-        nolocks_localtime(&tm,tv.tv_sec,cyziTimezone,cyzi_daylight_active);
+        nolocks_localtime_cyzi(&tm,tv.tv_sec,cyziTimezone,cyzi_daylight_active);
         off = strftime(buf,sizeof(buf),"%d %b %Y %H:%M:%S.",&tm);
         snprintf(buf+off,sizeof(buf)-off,"%03d",(int)tv.tv_usec/1000);
         if (cyzi_sentinel_mode) {
@@ -73,14 +73,14 @@ void cyziServerLogRaw(int level, const char *msg) {
     //if (cyzi_syslog_enabled) syslog(syslogLevelMap[level], "%s", msg);
 }
 
-static int is_leap_year(time_t year) {
+static int is_leap_year_cyzi(time_t year) {
     if (year % 4) return 0;         /* A year not divisible by 4 is not leap. */
     else if (year % 100) return 1;  /* If div by 4 and not 100 is surely leap. */
     else if (year % 400) return 0;  /* If div by 100 *and* not by 400 is not leap. */
     else return 1;                  /* If div by 100 and 400 is leap. */
 }
 
-void nolocks_localtime(struct tm *tmp, time_t t, time_t tz, int dst) {
+void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst) {
     const time_t secs_min = 60;
     const time_t secs_hour = 3600;
     const time_t secs_day = 3600*24;
@@ -104,7 +104,7 @@ void nolocks_localtime(struct tm *tmp, time_t t, time_t tz, int dst) {
     tmp->tm_year = 1970;
     while(1) {
         /* Leap years have one day more. */
-        time_t days_this_year = 365 + is_leap_year(tmp->tm_year);
+        time_t days_this_year = 365 + is_leap_year_cyzi(tmp->tm_year);
         if (days_this_year > days) break;
         days -= days_this_year;
         tmp->tm_year++;
@@ -115,7 +115,7 @@ void nolocks_localtime(struct tm *tmp, time_t t, time_t tz, int dst) {
      * so we need to skip days according to how many days there are in each
      * month, and adjust for the leap year that has one more day in February. */
     int mdays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    mdays[1] += is_leap_year(tmp->tm_year);
+    mdays[1] += is_leap_year_cyzi(tmp->tm_year);
 
     tmp->tm_mon = 0;
     while(days >= mdays[tmp->tm_mon]) {
