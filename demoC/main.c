@@ -4,9 +4,10 @@
 #include "demoA.h"
 #include "demoB.h"
 
+int demoA=10;
+
 int main(){
 
-demoA=10;
 
 printDemoA();
 demoA=1000;
