@@ -29,6 +29,7 @@
 
 #include "server.h"
 #include "cluster.h"
+#include "redislog.h"
 #include "slowlog.h"
 #include "bio.h"
 #include "latency.h"
@@ -5069,6 +5070,7 @@ int main(int argc, char **argv) {
         loadServerConfig(configfile,options);
         sdsfree(options);
     }
+	cyziServerLog(LL_WARNING, "cyzicyzicyzicyzicyzicyzicyzi Redis is starting cyzicyzicyzicyzicyzicyzicyzi");
 
     serverLog(LL_WARNING, "oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo");
     serverLog(LL_WARNING,
