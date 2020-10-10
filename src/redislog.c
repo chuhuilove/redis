@@ -26,13 +26,13 @@ void cyziServerLogRaw(int level, const char *msg) {
 
 
 	extern time_t cyziTimezone; 
-		extern  int cyzi_daylight_active; 
-		extern  int cyzi_sentinel_mode; 
-		extern char *cyzi_masterhost; 
-	 	extern pid_t cyzi_pid; 		
+	extern  int cyzi_daylight_active; 
+	extern  int cyzi_sentinel_mode; 
+	extern char *cyzi_masterhost; 
+	extern pid_t cyzi_pid; 		
 
 
-    const int syslogLevelMap[] = { LOG_DEBUG, LOG_INFO, LOG_NOTICE, LOG_WARNING };
+   // const int syslogLevelMap[] = { LOG_DEBUG, LOG_INFO, LOG_NOTICE, LOG_WARNING };
     const char *c = ".-*#";
     FILE *fp;
     char buf[64];

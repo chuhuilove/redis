@@ -44,11 +44,6 @@
 #include "util.h"
 #include "sha256.h"
 
-time_t cyziTimezone; 
-int cyzi_daylight_active; 
-int cyzi_sentinel_mode;	
-char *cyzi_masterhost; 
-pid_t cyzi_pid;			  
 
 
 /* Glob-style pattern matching. */
