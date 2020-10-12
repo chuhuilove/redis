@@ -32,6 +32,8 @@
 #include <sys/types.h>
 #include <sys/event.h>
 #include <sys/time.h>
+#include "redislog.h"
+
 
 typedef struct aeApiState {
     int kqfd;
@@ -39,6 +41,8 @@ typedef struct aeApiState {
 } aeApiState;
 
 static int aeApiCreate(aeEventLoop *eventLoop) {
+	cyziServerLog(CYZI_LL_WARNING, "ae_kqueue.c into aeApiCreate,param maxfd:%d,setsize:%d,timeEventNextId:%l",eventLoop->maxfd,eventLoop->setsize,eventLoop->timeEventNextId);
+	
     aeApiState *state = zmalloc(sizeof(aeApiState));
 
     if (!state) return -1;

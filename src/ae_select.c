@@ -31,6 +31,8 @@
 
 #include <sys/select.h>
 #include <string.h>
+#include "redislog.h"
+
 
 typedef struct aeApiState {
     fd_set rfds, wfds;
@@ -40,6 +42,7 @@ typedef struct aeApiState {
 } aeApiState;
 
 static int aeApiCreate(aeEventLoop *eventLoop) {
+	cyziServerLog(CYZI_LL_WARNING, "ae_select.c into aeApiCreate,param maxfd:%d,setsize:%d,timeEventNextId:%l",eventLoop->maxfd,eventLoop->setsize,eventLoop->timeEventNextId);
     aeApiState *state = zmalloc(sizeof(aeApiState));
 
     if (!state) return -1;

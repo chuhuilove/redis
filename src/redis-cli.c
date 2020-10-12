@@ -190,6 +190,7 @@ static void createClusterManagerCommand(char *cmdname, int argc, char **argv);
 
 
 static redisContext *context;
+/*客户端的配置**/
 static struct config {
     char *hostip;
     int hostport;
@@ -7921,6 +7922,9 @@ static sds askPassword() {
 
 int main(int argc, char **argv) {
     int firstarg;
+	
+	printf("...redis-client start.....argc:%d",argc);
+	fflush(stdout);
 
     config.hostip = sdsnew("127.0.0.1");
     config.hostport = 6379;

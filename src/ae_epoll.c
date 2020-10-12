@@ -41,7 +41,7 @@ typedef struct aeApiState {
 static int aeApiCreate(aeEventLoop *eventLoop) {
 
 
-	cyziServerLog(CYZI_LL_WARNING, "into aeApiCreate,param maxfd:%d,setsize:%d,timeEventNextId:%l",eventLoop->maxfd,eventLoop->setsize,eventLoop->timeEventNextId);
+	cyziServerLog(CYZI_LL_WARNING, "ae_epoll.c into aeApiCreate,param maxfd:%d,setsize:%d,timeEventNextId:%l",eventLoop->maxfd,eventLoop->setsize,eventLoop->timeEventNextId);
 	
     aeApiState *state = zmalloc(sizeof(aeApiState));
 

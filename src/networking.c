@@ -33,6 +33,7 @@
 #include <sys/uio.h>
 #include <math.h>
 #include <ctype.h>
+#include "redislog.h"
 
 static void setProtocolError(const char *errstr, client *c);
 int postponeClientRead(client *c);
@@ -86,6 +87,7 @@ void linkClient(client *c) {
 }
 
 client *createClient(connection *conn) {
+
     client *c = zmalloc(sizeof(client));
 
     /* passing NULL as conn it is possible to create a non connected client.
@@ -103,6 +105,7 @@ client *createClient(connection *conn) {
 
     selectDb(c,0);
     uint64_t client_id = ++server.next_client_id;
+	cyziServerLog(CYZI_LL_WARNING,"create client,the client_id:%ld",client_id);
     c->id = client_id;
     c->resp = 2;
     c->conn = conn;
@@ -2863,7 +2866,10 @@ int io_threads_op;      /* IO_THREADS_OP_WRITE or IO_THREADS_OP_READ. */
 
 /* This is the list of clients each thread will serve when threaded I/O is
  * used. We spawn io_threads_num-1 threads, since one is the main thread
- * itself. */
+ * itself.
+ * 这是使用线程I/O时每个线程将服务的客户端列表.
+ * 这里生成io_threads_num-1个线程,因为其中一个线程是主线程本身.
+ */
 list *io_threads_list[IO_THREADS_MAX_NUM];
 
 void *IOThreadMain(void *myid) {

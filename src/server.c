@@ -2750,6 +2750,8 @@ void initServer(void) {
 
     createSharedObjects();
     adjustOpenFilesLimit();
+	cyziServerLog(CYZI_LL_WARNING,"start create event loop,maxclients:%d,CONFIG_FDSET_INCR:%d",server.maxclients,CONFIG_FDSET_INCR);
+		
     server.el = aeCreateEventLoop(server.maxclients+CONFIG_FDSET_INCR);
     if (server.el == NULL) {
         serverLog(LL_WARNING,
