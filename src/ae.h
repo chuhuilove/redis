@@ -38,9 +38,9 @@
 #define AE_OK 0
 #define AE_ERR -1
 
-#define AE_NONE 0       /* No events registered. */
-#define AE_READABLE 1   /* Fire when descriptor is readable. */
-#define AE_WRITABLE 2   /* Fire when descriptor is writable. */
+#define AE_NONE 0       /* 没有消息注册No events registered. */
+#define AE_READABLE 1   /* 当描述符是可读的时触发Fire when descriptor is readable. */
+#define AE_WRITABLE 2   /* 当描述符是可写的时触发Fire when descriptor is writable. */
 #define AE_BARRIER 4    /* With WRITABLE, never fire the event if the
                            READABLE event already fired in the same event
                            loop iteration. Useful when you want to persist

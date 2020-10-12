@@ -889,6 +889,8 @@ void clientAcceptHandler(connection *conn) {
 
 #define MAX_ACCEPTS_PER_CALL 1000
 static void acceptCommonHandler(connection *conn, int flags, char *ip) {
+	cyziServerLog(CYZI_LL_WARNING,"networking.c->acceptCommonHandler client request handle,ip:%s",ip);
+
     client *c;
     UNUSED(ip);
 
@@ -945,6 +947,8 @@ static void acceptCommonHandler(connection *conn, int flags, char *ip) {
 }
 
 void acceptTcpHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
+
+	cyziServerLog(CYZI_LL_WARNING,"networking.c->acceptTcpHandler. mask:%d,fd:%d",mask,fd);
     int cport, cfd, max = MAX_ACCEPTS_PER_CALL;
     char cip[NET_IP_STR_LEN];
     UNUSED(el);
@@ -965,6 +969,8 @@ void acceptTcpHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
 }
 
 void acceptTLSHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
+	cyziServerLog(CYZI_LL_WARNING,"networking.c->acceptTLSHandler. mask:%d,fd:%d",mask,fd);
+
     int cport, cfd, max = MAX_ACCEPTS_PER_CALL;
     char cip[NET_IP_STR_LEN];
     UNUSED(el);
@@ -985,6 +991,8 @@ void acceptTLSHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
 }
 
 void acceptUnixHandler(aeEventLoop *el, int fd, void *privdata, int mask) {
+	cyziServerLog(CYZI_LL_WARNING,"networking.c->acceptUnixHandler. mask:%d,fd:%d",mask,fd);
+
     int cfd, max = MAX_ACCEPTS_PER_CALL;
     UNUSED(el);
     UNUSED(mask);

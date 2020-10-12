@@ -155,6 +155,8 @@ void aeStop(aeEventLoop *eventLoop) {
 int aeCreateFileEvent(aeEventLoop *eventLoop, int fd, int mask,
         aeFileProc *proc, void *clientData)
 {
+	cyziServerLog(CYZI_LL_WARNING,"ae.c->aeCreateFileEvent...create ");
+
     if (fd >= eventLoop->setsize) {
         errno = ERANGE;
         return AE_ERR;
