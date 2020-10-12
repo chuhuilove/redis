@@ -32,7 +32,6 @@ void cyziServerLogRaw(int level, const char *msg) {
 	extern pid_t cyzi_pid; 		
 
 
-   // const int syslogLevelMap[] = { LOG_DEBUG, LOG_INFO, LOG_NOTICE, LOG_WARNING };
     const char *c = ".-*#";
     FILE *fp;
     char buf[64];
@@ -50,28 +49,22 @@ void cyziServerLogRaw(int level, const char *msg) {
     } else {
         int off;
         struct timeval tv;
-        int role_char;
+        int role_char='Y';
         pid_t pid = getpid();
 
         gettimeofday(&tv,NULL);
         struct tm tm;
         nolocks_localtime_cyzi(&tm,tv.tv_sec,cyziTimezone,cyzi_daylight_active);
-         off = strftime(buf,sizeof(buf),"%Y %m %d %H:%M:%S.",&tm);
+         off = strftime(buf,sizeof(buf),"%Y-%m-%d %H:%M:%S.",&tm);
         snprintf(buf+off,sizeof(buf)-off,"%03d",(int)tv.tv_usec/1000);
-        if (cyzi_sentinel_mode) {
-            role_char = 'X'; /* Sentinel. */
-        } else if (pid != cyzi_pid) {
-            role_char = 'C'; /* RDB / AOF writing child. */
-        } else {
-            role_char = (cyzi_masterhost ? 'S':'M'); /* Slave or Master. */
-        }
+       
         fprintf(fp,"%d:%c %s %c %s\n",
             (int)getpid(),role_char, buf,c[level],msg);
     }
     fflush(fp);
-
+	//文件频繁的打开与关闭,会造成Redis性能整体的下降
     if (!log_to_stdout) fclose(fp);
-    //if (cyzi_syslog_enabled) syslog(syslogLevelMap[level], "%s", msg);
+   
 }
 
 static int is_leap_year_cyzi(time_t year) {

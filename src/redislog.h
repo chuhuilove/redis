@@ -11,7 +11,14 @@
 
 #define CYZI_LOG_MAX_LEN    1024 /* Default maximum length of syslog messages.*/
 #define CYZI_LL_RAW (1<<10) /* Modifier to log without timestamp */
-#define CYZI_LOG_PATH "CyziLog.log"
+#define CYZI_LOG_PATH "RedisCyziLog.log"
+
+
+#define CYZI_LL_DEBUG 0
+#define CYZI_LL_VERBOSE 1
+#define CYZI_LL_NOTICE 2
+#define CYZI_LL_WARNING 3
+
 
 void cyziServerLog(int loglevel,char * message,...);
 

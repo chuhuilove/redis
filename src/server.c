@@ -4928,7 +4928,9 @@ int iAmMaster(void) {
 
 
 int main(int argc, char **argv) {
- 	    struct timeval tv;
+	cyziServerLog(CYZI_LL_WARNING, "cyzi Redis is server start main..argc is:%d",argc);
+
+ 	struct timeval tv;
     int j;
 
 #ifdef REDIS_TEST
@@ -5070,7 +5072,7 @@ int main(int argc, char **argv) {
         loadServerConfig(configfile,options);
         sdsfree(options);
     }
-	cyziServerLog(LL_WARNING, "cyzicyzicyzicyzicyzicyzicyzi Redis is starting cyzicyzicyzicyzicyzicyzicyzi");
+	cyziServerLog(CYZI_LL_WARNING, "cyzicyzicyzicyzicyzicyzicyzi Redis is starting cyzicyzicyzicyzicyzicyzicyzi");
 
     serverLog(LL_WARNING, "oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo");
     serverLog(LL_WARNING,
