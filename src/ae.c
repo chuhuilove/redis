@@ -39,7 +39,7 @@
 #include <string.h>
 #include <time.h>
 #include <errno.h>
-
+#include "redislog.h"
 #include "ae.h"
 #include "zmalloc.h"
 #include "config.h"
@@ -63,6 +63,8 @@
 aeEventLoop *aeCreateEventLoop(int setsize) {
     aeEventLoop *eventLoop;
     int i;
+
+	cyziServerLog(CYZI_LL_WARNING,"into aeCreateEventLoop,param is:%d",setsize);
 
     if ((eventLoop = zmalloc(sizeof(*eventLoop))) == NULL) goto err;
     eventLoop->events = zmalloc(sizeof(aeFileEvent)*setsize);
