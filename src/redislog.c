@@ -56,7 +56,7 @@ void cyziServerLogRaw(int level, const char *msg) {
         gettimeofday(&tv,NULL);
         struct tm tm;
         nolocks_localtime_cyzi(&tm,tv.tv_sec,cyziTimezone,cyzi_daylight_active);
-        off = strftime(buf,sizeof(buf),"%d %b %Y %H:%M:%S.",&tm);
+         off = strftime(buf,sizeof(buf),"%Y %m %d %H:%M:%S.",&tm);
         snprintf(buf+off,sizeof(buf)-off,"%03d",(int)tv.tv_usec/1000);
         if (cyzi_sentinel_mode) {
             role_char = 'X'; /* Sentinel. */
