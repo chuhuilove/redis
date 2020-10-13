@@ -29,7 +29,7 @@
 
 #include "server.h"
 #include <math.h> /* isnan(), isinf() */
-
+#include "redislog.h"
 /*-----------------------------------------------------------------------------
  * String Commands
  *----------------------------------------------------------------------------*/
@@ -163,7 +163,10 @@ void psetexCommand(client *c) {
 
 int getGenericCommand(client *c) {
     robj *o;
+	cyziServerLog(CYZI_LL_WARNING,"t_string.c->getGenericCommand. client_id:%ld,argc:%d",c->id,c->argc);
 
+
+	
     if ((o = lookupKeyReadOrReply(c,c->argv[1],shared.null[c->resp])) == NULL)
         return C_OK;
 

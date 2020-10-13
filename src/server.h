@@ -640,7 +640,10 @@ typedef struct clientReplyBlock {
 
 /* Redis database representation. There are multiple databases identified
  * by integers from 0 (the default database) up to the max configured
- * database. The database number is the 'id' field in the structure. */
+ * database. The database number is the 'id' field in the structure. 
+ * 
+ * 表示Redis数据库的结构.
+ */
 typedef struct redisDb {
     dict *dict;                 /* The keyspace for this DB */
     dict *expires;              /* Timeout of keys with a timeout set */
@@ -766,19 +769,19 @@ typedef struct user {
                                       -2, ... and so forth. */
 
 typedef struct client {
-    uint64_t id;            /* Client incremental unique ID. */
+    uint64_t id;            /* Client自增唯一ID. */
     connection *conn;
     int resp;               /* RESP protocol version. Can be 2 or 3. */
     redisDb *db;            /* Pointer to currently SELECTed DB. */
     robj *name;             /* As set by CLIENT SETNAME. */
-    sds querybuf;           /* Buffer we use to accumulate client queries. */
+    sds querybuf;           /* 用于累积客户端查询的缓冲区Buffer we use to accumulate client queries. */
     size_t qb_pos;          /* The position we have read in querybuf. */
     sds pending_querybuf;   /* If this client is flagged as master, this buffer
                                represents the yet not applied portion of the
                                replication stream that we are receiving from
                                the master. */
     size_t querybuf_peak;   /* Recent (100ms or more) peak of querybuf size. */
-    int argc;               /* Num of arguments of current command. */
+    int argc;               /* 当前命令的参数个数Num of arguments of current command. */
     robj **argv;            /* Arguments of current command. */
     struct redisCommand *cmd, *lastcmd;  /* Last command executed. */
     user *user;             /* User associated with this connection. If the
