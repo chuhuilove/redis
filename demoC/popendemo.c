@@ -75,9 +75,7 @@ char ** initData(){
 }
 
   char * resolveAddr(char * originalStr){
-
 	char result[64];
-	bzero(array,64);
 
 	int lastChar=']';
 	int isAddr=0;
@@ -91,7 +89,7 @@ char ** initData(){
 			isAddr=1;
 		}
 	}
-	result[j]=lastChar;
+	result[j]='\0';
 	char * actualAddr=result;
 	return actualAddr;
 }
