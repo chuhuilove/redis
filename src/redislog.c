@@ -66,7 +66,7 @@ void cyziServerLogRaw(int level, const char *msg) {
         fprintf(fp,"%d:%c %s %c %s\n",
             (int)getpid(),role_char, buf,c[level],msg);
     }
-	print_stacktrace(fp);
+	printStacktrace(fp);
     fflush(fp);
 	//文件频繁的打开与关闭,会造成Redis性能整体的下降
     if (!log_to_stdout) fclose(fp);
@@ -75,19 +75,45 @@ void cyziServerLogRaw(int level, const char *msg) {
 
 
 
-void print_stacktrace(FILE * fp)
+void printStacktrace(FILE * fp)
 {
     int size = 512;
     void * array[size];
     int stack_num = backtrace(array, size);
     char ** stacktrace = backtrace_symbols(array, stack_num);
-    for (int i = 0; i < stack_num; ++i)
+
+
+    char ** funAdds;
+
+    for (int i = stack_num-1; i <>=0; i--)
     {
         fprintf(fp,"%s\n", stacktrace[i]);
     }
+
+
+
     free(stacktrace);
 }
 
+
+static char* retrievalAddr(char* originalStr){
+	char result [64];
+
+	int lastChar=']';
+	int isAddr=0;
+	int j=0;
+	for(int i=0;originalStr[i]!=lastChar;i++){
+		if(isAddr){
+			result[j++]=originalStr[i];
+			continue;
+		}
+		if(originalStr[i]=='['){
+			isAddr=1;			
+		}	
+	}
+	return result;
+
+}
 
 
 static int is_leap_year_cyzi(time_t year) {
