@@ -91,7 +91,8 @@ char * resolveAddr(char * originalStr){
 		}
 	}
 	result[j]=lastChar;
-	return result;
+	char * message=result;
+	return message;
 }
 
 
