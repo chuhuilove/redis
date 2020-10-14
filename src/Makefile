@@ -139,7 +139,7 @@ endif
 endif
 endif
 # Include paths to dependencies
-FINAL_CFLAGS+= -rdynamic -g  -I../deps/hiredis -I../deps/linenoise -I../deps/lua/src
+FINAL_CFLAGS+= -I../deps/hiredis -I../deps/linenoise -I../deps/lua/src
 
 # Determine systemd support and/or build preference (defaulting to auto-detection)
 BUILD_WITH_SYSTEMD=no
@@ -191,15 +191,15 @@ REDIS_CC=$(QUIET_CC)$(CC) $(FINAL_CFLAGS)
 REDIS_LD=$(QUIET_LINK)$(CC) $(FINAL_LDFLAGS)
 REDIS_INSTALL=$(QUIET_INSTALL)$(INSTALL)
 
-CCCOLOR="\033[34m CCCOLORcyzi"
-LINKCOLOR="\033[34;1m LINKCOLORcyzi"
+CCCOLOR="\033[34m CCCOLORcyzi "
+LINKCOLOR="\033[34;1m LINKCOLORcyzi "
 SRCCOLOR="\033[33m SRCCOLORcyzi"
-BINCOLOR="\033[37;1m BINCOLORcyzi"
-MAKECOLOR="\033[32;1m MAKECOLORcyzi"
-ENDCOLOR="\033[0m ENDCOLORcyzi"
+BINCOLOR="\033[37;1m BINCOLORcyzi "
+MAKECOLOR="\033[32;1m MAKECOLORcyzi "
+ENDCOLOR="\033[0m ENDCOLORcyzi "
 
 ifndef V
-QUIET_CC = @printf '    cyzi-->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR)$@$(ENDCOLOR) 1>&2;
+QUIET_CC = @printf '    cyzi-->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR) -rdynamic -g  $@$(ENDCOLOR) 1>&2;
 QUIET_LINK = @printf '    cyzi-->QUIETLINK %b %b\n' $(LINKCOLOR)LINK$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
 QUIET_INSTALL = @printf '    cyzi-->QUIETINSTALL %b %b\n' $(LINKCOLOR)INSTALL$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
 endif
