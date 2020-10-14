@@ -21,9 +21,9 @@ int stack_num = 8;
 for(int i=stack_num-1;i>=0;i--){
 
 
-
 char * resolvedAddr=resolveAddr(stacktrace[i]);
 printf("%s resolved addr is: %s\n",stacktrace[i],resolvedAddr);
+free(resolvedAddr);
 }
 
 
@@ -74,9 +74,9 @@ char ** initData(){
 
 }
 
-char * resolveAddr(char * originalStr){
+  char * resolveAddr(char * originalStr){
 
-	char result [64];
+	char * result=(char *)malloc(64) ;
 
 	int lastChar=']';
 	int isAddr=0;
@@ -91,8 +91,7 @@ char * resolveAddr(char * originalStr){
 		}
 	}
 	result[j]=lastChar;
-	char * message=result;
-	return message;
+	return result;
 }
 
 
