@@ -77,7 +77,7 @@ char ** initData(){
   char * resolveAddr(char * originalStr){
 
 	char result[64];
-	memset(array, 0, 64);
+	bzero(array,64);
 
 	int lastChar=']';
 	int isAddr=0;
