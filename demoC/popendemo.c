@@ -8,6 +8,10 @@
 
 char ** initData();
 char *resolveAddr();
+
+
+#define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
+
 int main(){
 
 
@@ -16,14 +20,18 @@ char ** stacktrace= initData();
 int stack_num = 8;
 
 
-//char *reg_str = "(.*)\[([^\[\]]*)\](.*)";
-
+char * commands[];
+int commandIndex=0;
+char  command[128];
 for(int i=stack_num-1;i>=0;i--){
 
-
-char * resolvedAddr=resolveAddr(stacktrace[i]);
-printf("%s resolved addr is: %s\n",stacktrace[i],resolvedAddr);
-
+    char * currentAddr=stacktrace[i];
+    char * resolvedAddr=resolveAddr(currentAddr);
+//    printf("%s resolved addr is: %s\n",currentAddr,resolvedAddr);
+    sprintf(command,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+    commands[commandIndex]=command;
+    printf(" %s resolved addr is: %s,command is:%s\n",currentAddr,resolvedAddr,commands[commandIndex]);
+    commandIndex++;
 }
 
 
