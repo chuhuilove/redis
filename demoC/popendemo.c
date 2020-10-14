@@ -1,11 +1,10 @@
 
-
 #include<stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <regex.h>
 
-char ** initData();
+//void initData();
 char *resolveAddr();
 
 
@@ -15,19 +14,27 @@ int main(){
 
 
 
-char ** stacktrace= initData();
+char *stacktrace[8]={                   "src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
+                                       "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]",
+                                       "src/redis-server(cyziServerLog+0xbe) [0x4c106e]",
+                                       "src/redis-server(aeCreateFileEvent+0x2d) [0x436ccd]",
+                                       "src/redis-server(initServer+0x540) [0x433880]",
+                                       "src/redis-server(main+0x40a) [0x42bf7a]",
+                                       "/lib64/libc.so.6(__libc_start_main+0xf5) [0x7f3dc0129555]",
+                                       "src/redis-server() [0x42c319]"};
+//initData(&stacktrace);
 int stack_num = 8;
 
 
 char * commands[stack_num];
 char * currentFunName;
-
+char * resolvedAddr;
 for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     currentFunName=stacktrace[i];
-    printf("xxxxxxxxxxxxx start resolve funcation  is:%s",currentFunName);
-    char * resolvedAddr=resolveAddr(currentFunName);
-    printf("xxxxxxxxxxxxx current Funcation name is:%s",resolvedAddr);
+    //printf("xxxxxxxxxxxxx start resolve funcation  is:%s",currentFunName);
+    resolvedAddr=resolveAddr(currentFunName);
+    printf("funcation name is:%s,address is: %s,123\n",currentFunName,resolvedAddr);
 //    char commandBuf[256]={0};
 //    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
 //
@@ -56,19 +63,10 @@ return 0;
 }
 
 
-char ** initData(){
+void initData( char** data){
 
-    char * data[]={"src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
-                                       "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]",
-                                       "src/redis-server(cyziServerLog+0xbe) [0x4c106e]",
-                                       "src/redis-server(aeCreateFileEvent+0x2d) [0x436ccd]",
-                                       "src/redis-server(initServer+0x540) [0x433880]",
-                                       "src/redis-server(main+0x40a) [0x42bf7a]",
-                                       "/lib64/libc.so.6(__libc_start_main+0xf5) [0x7f3dc0129555]",
-                                       "src/redis-server() [0x42c319]"};
 
-    char ** result=data;
-    return result;
+
 
 }
 
@@ -91,8 +89,4 @@ char ** initData(){
 	char * actualAddr=result;
 	return actualAddr;
 }
-
-
-
-
 
