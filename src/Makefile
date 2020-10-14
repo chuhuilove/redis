@@ -131,7 +131,7 @@ ifeq ($(uname_S),DragonFly)
 else
 	# All the other OSes (notably Linux)
 	FINAL_LDFLAGS+= -rdynamic -g -Wunused-variable
-	FINAL_LIBS+=-ldl -pthread -lrt
+	FINAL_LIBS+=-ldl -pthread -lrt -rdynamic -g -Wunused-variable
 endif
 endif
 endif
@@ -220,7 +220,7 @@ all: $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCH
 	@echo ""
 
 Makefile.dep:
-	-$(REDIS_CC) -rdynamic -g -Wunused-variable -MM *.c > Makefile.dep 2> /dev/null || true
+	-$(REDIS_CC) -MM *.c > Makefile.dep 2> /dev/null || true
 
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
 -include Makefile.dep
