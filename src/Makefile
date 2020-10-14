@@ -130,8 +130,8 @@ ifeq ($(uname_S),DragonFly)
 	FINAL_LIBS+= -lpthread -lexecinfo
 else
 	# All the other OSes (notably Linux)
-	FINAL_LDFLAGS+= -rdynamic -g -Wunused-variable
-	FINAL_LIBS+=-ldl -pthread -lrt -rdynamic -g -Wunused-variable
+	FINAL_LDFLAGS+= -rdynamic 
+	FINAL_LIBS+=-ldl -pthread -lrt 
 endif
 endif
 endif
@@ -258,7 +258,7 @@ endif
 
 # redis-server
 $(REDIS_SERVER_NAME): $(REDIS_SERVER_OBJ)
-	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a $(FINAL_LIBS)
+	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a $(FINAL_LIBS) -rdynamic -g -Wunused-variable
 
 # redis-sentinel
 $(REDIS_SENTINEL_NAME): $(REDIS_SERVER_NAME)
