@@ -60,14 +60,14 @@ return 0;
 
 char ** initData(){
 
-   const char ** result=["src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
+   const char ** result={"src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
                                        "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]",
                                        "src/redis-server(cyziServerLog+0xbe) [0x4c106e]",
                                        "src/redis-server(aeCreateFileEvent+0x2d) [0x436ccd]",
                                        "src/redis-server(initServer+0x540) [0x433880]",
                                        "src/redis-server(main+0x40a) [0x42bf7a]",
                                        "/lib64/libc.so.6(__libc_start_main+0xf5) [0x7f3dc0129555]",
-                                       "src/redis-server() [0x42c319]"];
+                                       "src/redis-server() [0x42c319]"};
     return result;
 
 }
