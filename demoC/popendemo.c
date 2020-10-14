@@ -7,7 +7,7 @@
 
 //void initData();
 char *resolveAddr();
-char * buildCommand(int commandLen,int commandCount,char *[] commands);
+char * buildCommand(int commandLen,int commandCount,char ** commands);
 
 
 #define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
@@ -65,7 +65,7 @@ return 0;
 }
 
 
-char * buildCommand(int commandLen,int commandCount,char *[] commands){
+char * buildCommand(int commandLen,int commandCount,char ** commands){
 
     char  allCommands[commandLen+1];
 
