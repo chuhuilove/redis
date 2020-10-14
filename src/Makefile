@@ -26,7 +26,7 @@ ifneq (,$(findstring FreeBSD,$(uname_S)))
   STD+=-Wno-c11-extensions
 endif
 endif
-WARN=-Wall -W -Wno-missing-field-initializers 
+WARN=-Wall -W -Wno-missing-field-initializers
 OPT=$(OPTIMIZATION)
 
 PREFIX?=/usr/local
@@ -73,7 +73,7 @@ endif
 # Override default settings if possible
 -include .make-settings
 
-FINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS) 
+FINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS)
 FINAL_LDFLAGS=$(LDFLAGS) $(REDIS_LDFLAGS) $(DEBUG)
 FINAL_LIBS=-lm
 DEBUG=-g -ggdb
@@ -191,17 +191,17 @@ REDIS_CC=$(QUIET_CC)$(CC) $(FINAL_CFLAGS)
 REDIS_LD=$(QUIET_LINK)$(CC) $(FINAL_LDFLAGS)
 REDIS_INSTALL=$(QUIET_INSTALL)$(INSTALL)
 
-CCCOLOR="\033[34m CCCOLORcyzi "
-LINKCOLOR="\033[34;1m LINKCOLORcyzi "
-SRCCOLOR="\033[33m SRCCOLORcyzi"
-BINCOLOR="\033[37;1m BINCOLORcyzi "
-MAKECOLOR="\033[32;1m MAKECOLORcyzi "
-ENDCOLOR="\033[0m ENDCOLORcyzi "
+CCCOLOR="\033[34m cyzi "
+LINKCOLOR="\033[34;1m cyzi "
+SRCCOLOR="\033[33m cyzi "
+BINCOLOR="\033[37;1m cyzi "
+MAKECOLOR="\033[32;1m cyzi "
+ENDCOLOR="\033[0m cyzi "
 
 ifndef V
-QUIET_CC = @printf '    cyzi-->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR)   $@$(ENDCOLOR) 1>&2;
-QUIET_LINK = @printf '    cyzi-->QUIETLINK %b %b\n' $(LINKCOLOR)LINK$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
-QUIET_INSTALL = @printf '    cyzi-->QUIETINSTALL %b %b\n' $(LINKCOLOR)INSTALL$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
+QUIET_CC = @printf '    cyzi->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR)$@$(ENDCOLOR) 1>&2;
+QUIET_LINK = @printf '    cyzi->QUIETLINK %b %b\n' $(LINKCOLOR)LINK$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
+QUIET_INSTALL = @printf '    cyzi->QUIETINSTALL %b %b\n' $(LINKCOLOR)INSTALL$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
 endif
 
 REDIS_SERVER_NAME=redis-server
@@ -220,7 +220,7 @@ all: $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCH
 	@echo ""
 
 Makefile.dep:
-	-$(REDIS_CC) -MM *.c > Makefile.dep 2> /dev/null || true
+	-$(REDIS_CC)  -rdynamic -g -MM *.c > Makefile.dep 2> /dev/null || true
 
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
 -include Makefile.dep
@@ -258,39 +258,39 @@ endif
 
 # redis-server
 $(REDIS_SERVER_NAME): $(REDIS_SERVER_OBJ)
-	$(REDIS_LD)   $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a $(FINAL_LIBS)
+	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a $(FINAL_LIBS)
 
 # redis-sentinel
 $(REDIS_SENTINEL_NAME): $(REDIS_SERVER_NAME)
-	$(REDIS_INSTALL)  $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME)
+	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME)
 
 # redis-check-rdb
 $(REDIS_CHECK_RDB_NAME): $(REDIS_SERVER_NAME)
-	$(REDIS_INSTALL)  $(REDIS_SERVER_NAME) $(REDIS_CHECK_RDB_NAME)
+	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(REDIS_CHECK_RDB_NAME)
 
 # redis-check-aof
 $(REDIS_CHECK_AOF_NAME): $(REDIS_SERVER_NAME)
-	$(REDIS_INSTALL)  $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME)
+	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME)
 
 # redis-cli
 $(REDIS_CLI_NAME): $(REDIS_CLI_OBJ)
-	$(REDIS_LD)    -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/linenoise/linenoise.o $(FINAL_LIBS)
+	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/linenoise/linenoise.o $(FINAL_LIBS)
 
 # redis-benchmark
 $(REDIS_BENCHMARK_NAME): $(REDIS_BENCHMARK_OBJ)
-	$(REDIS_LD)  -o $@ $^ ../deps/hiredis/libhiredis.a $(FINAL_LIBS)
+	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a $(FINAL_LIBS)
 
 dict-benchmark: dict.c zmalloc.c sds.c siphash.c
 	$(REDIS_CC) $(FINAL_CFLAGS) $^ -D DICT_BENCHMARK_MAIN -o $@ $(FINAL_LIBS)
 
 DEP = $(REDIS_SERVER_OBJ:%.o=%.d) $(REDIS_CLI_OBJ:%.o=%.d) $(REDIS_BENCHMARK_OBJ:%.o=%.d)
--include $(DEP)  
+-include $(DEP)
 
 # Because the jemalloc.h header is generated as a part of the jemalloc build,
 # building it should complete before building any other object. Instead of
 # depending on a single artifact, build all dependencies first.
 %.o: %.c .make-prerequisites
-	$(REDIS_CC) -MMD -o  $@ -c $<
+	$(REDIS_CC) -MMD -o $@ -c $<
 
 clean:
 	rm -rf $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME) $(REDIS_CHECK_RDB_NAME) $(REDIS_CHECK_AOF_NAME) *.o *.gcda *.gcno *.gcov redis.info lcov-html Makefile.dep dict-benchmark
