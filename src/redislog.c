@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <execinfo .h>
+#include <stdlib .h>
+
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 
@@ -44,6 +47,8 @@ void cyziServerLogRaw(int level, const char *msg) {
     fp = log_to_stdout ? stdout : fopen(CYZI_LOG_PATH,"a");
     if (!fp) return;
 
+	
+
     if (rawmode) {
         fprintf(fp,"%s",msg);
     } else {
@@ -61,11 +66,29 @@ void cyziServerLogRaw(int level, const char *msg) {
         fprintf(fp,"%d:%c %s %c %s\n",
             (int)getpid(),role_char, buf,c[level],msg);
     }
+	print_stacktrace(fp);
     fflush(fp);
 	//文件频繁的打开与关闭,会造成Redis性能整体的下降
     if (!log_to_stdout) fclose(fp);
    
 }
+
+
+
+void print_stacktrace(FILE * fp)
+{
+    int size = 512;
+    void * array[size];
+    int stack_num = backtrace(array, size);
+    char ** stacktrace = backtrace_symbols(array, stack_num);
+    for (int i = 0; i < stack_num; ++i)
+    {
+        fprintf(fp,"%s\n", stacktrace[i]);
+    }
+    free(stacktrace);
+}
+
+
 
 static int is_leap_year_cyzi(time_t year) {
     if (year % 4) return 0;         /* A year not divisible by 4 is not leap. */
