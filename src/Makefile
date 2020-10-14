@@ -73,9 +73,9 @@ endif
 # Override default settings if possible
 -include .make-settings
 
-FINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS)
+FINAL_CFLAGS=$(STD) $(WARN) $(OPT) $(DEBUG) $(CFLAGS) $(REDIS_CFLAGS) -rdynamic -g  -Wunused-variable 
 FINAL_LDFLAGS=$(LDFLAGS) $(REDIS_LDFLAGS) $(DEBUG)
-FINAL_LIBS=-rdynamic -g -lm -Wunused-variable 
+FINAL_LIBS=-lm
 DEBUG=-g -ggdb
 
 # Linux ARM needs -latomic at linking time
