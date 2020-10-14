@@ -291,8 +291,8 @@ DEP = $(REDIS_SERVER_OBJ:%.o=%.d) $(REDIS_CLI_OBJ:%.o=%.d) $(REDIS_BENCHMARK_OBJ
 # building it should complete before building any other object. Instead of
 # depending on a single artifact, build all dependencies first.
 %.o: %.c .make-prerequisites
-	$(REDIS_CC) -MMD -o $@ -c $<
-	$(warning "cyzi--make prerequisites-->$(REDIS_CC) -MMD -o $@ -c $<")
+	$(REDIS_CC) -MMD -rdynamic -g  -o $@ -c $<
+	$(warning "cyzi--make prerequisites-->$(REDIS_CC) -MMD -rdynamic -g  -o $@ -c $<")
 
 clean:
 	rm -rf $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCHMARK_NAME) $(REDIS_CHECK_RDB_NAME) $(REDIS_CHECK_AOF_NAME) *.o *.gcda *.gcno *.gcov redis.info lcov-html Makefile.dep dict-benchmark
