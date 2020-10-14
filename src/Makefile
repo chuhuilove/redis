@@ -199,7 +199,7 @@ MAKECOLOR="\033[32;1m MAKECOLORcyzi "
 ENDCOLOR="\033[0m ENDCOLORcyzi "
 
 ifndef V
-QUIET_CC = @printf '    cyzi-->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR) -rdynamic -g  $@$(ENDCOLOR) 1>&2;
+QUIET_CC = @printf '    cyzi-->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR)   $@$(ENDCOLOR) 1>&2;
 QUIET_LINK = @printf '    cyzi-->QUIETLINK %b %b\n' $(LINKCOLOR)LINK$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
 QUIET_INSTALL = @printf '    cyzi-->QUIETINSTALL %b %b\n' $(LINKCOLOR)INSTALL$(ENDCOLOR) $(BINCOLOR)$@$(ENDCOLOR) 1>&2;
 endif
