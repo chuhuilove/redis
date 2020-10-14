@@ -39,8 +39,7 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
     char commandBuf[256]={0};
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
 
-    char *command=commandBuf;
-    commands[commandIndex]=command;
+    commands[commandIndex++]=command;
 }
 
     char * command=buildCommand(commandLen,stack_num,commands);
