@@ -19,7 +19,7 @@
 #define CYZI_LL_NOTICE 2
 #define CYZI_LL_WARNING 3
 
-#define CYZI_REDIS_SERVER_ABSTRACT_PATH="/home/yunchu/redis-cyzi/src/redis-server";
+#define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
 
 
 void cyziServerLog(int loglevel,char * message,...);

@@ -3,9 +3,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <regex.h>
+#include <stdarg.h>
 
 //void initData();
 char *resolveAddr();
+char * buildCommand(int commandLen,char *[] commands,int commandCount);
 
 
 #define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
@@ -29,46 +31,61 @@ int stack_num = 8;
 char * commands[stack_num];
 char * currentFunName;
 char * resolvedAddr;
+int commandLen=0;
 for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     currentFunName=stacktrace[i];
-    //printf("xxxxxxxxxxxxx start resolve funcation  is:%s",currentFunName);
     resolvedAddr=resolveAddr(currentFunName);
-//    printf("funcation name is:%s,address is: %s\n",currentFunName,resolvedAddr);
     char commandBuf[256]={0};
-    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+    commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
 
     char *command=commandBuf;
     commands[commandIndex]=command;
-    printf(" %s resolved addr is: %s,command is:%s\n",currentFunName,resolvedAddr,commands[commandIndex]);
 }
 
+    char * command=buildCommand(commands);
 
-/*
-    FILE *fp = NULL;
-	char data[200] = {'0'};
-	fp = popen("addr2line -a 0x42bf7a -e /home/yunchu/redis-cyzi/src/redis-server -f -C", "r");
-	if (fp == NULL)
-	{
-		printf("popen error!\n");
-		return 1;
-	}
-	while (fgets(data, sizeof(data), fp) != NULL)
-	{
-		printf("%s", data);
-	}
-	pclose(fp);
-*/
+    printf("command is:%s\n",command);
+
+//    FILE *fp = NULL;
+//	char data[200] = {'0'};
+//	fp = popen(command, "r");
+//	if (fp == NULL)
+//	{
+//		printf("popen error!\n");
+//		return 1;
+//	}
+//	while (fgets(data, sizeof(data), fp) != NULL)
+//	{
+//		printf("%s", data);
+//	}
+//	pclose(fp);
+
 return 0;
 }
 
 
-void initData( char** data){
+char * buildCommand(int commandLen,char *[] commands,int commandCount){
 
+    char  allCommands[commandLen+1];
 
+    int allCommandsIndex=0;
+    for(int i=0;i<commandCount;i++){
 
+        while(*commandCount[i]!='\0'){
+            allCommands[allCommandsIndex++]=*commandCount[i]++;
+        }
+
+    }
+    allCommands[commandLen+1]='\0';
+    char * command=allCommands;
+    return command;
 
 }
+
+
+
+
 
   char * resolveAddr(char * originalStr){
 	char result[64];
