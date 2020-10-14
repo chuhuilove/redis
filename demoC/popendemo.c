@@ -23,7 +23,7 @@ for(int i=stack_num-1;i>=0;i--){
 
 
 char * resolvedAddr=resolveAddr(stacktrace[i]);
-printf("resolved addr is: %s",resolvedAddr);
+printf("%s resolved addr is: %s\n",stacktrace[i],resolvedAddr);
 }
 
 
