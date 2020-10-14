@@ -191,12 +191,12 @@ REDIS_CC=$(QUIET_CC)$(CC) $(FINAL_CFLAGS)
 REDIS_LD=$(QUIET_LINK)$(CC) $(FINAL_LDFLAGS)
 REDIS_INSTALL=$(QUIET_INSTALL)$(INSTALL)
 
-CCCOLOR="\033[34m cyzi "
-LINKCOLOR="\033[34;1m cyzi "
-SRCCOLOR="\033[33m cyzi "
-BINCOLOR="\033[37;1m cyzi "
-MAKECOLOR="\033[32;1m cyzi "
-ENDCOLOR="\033[0m cyzi "
+CCCOLOR="\033[34m"
+LINKCOLOR="\033[34;1m"
+SRCCOLOR="\033[33m"
+BINCOLOR="\033[37;1m"
+MAKECOLOR="\033[32;1m"
+ENDCOLOR="\033[0m"
 
 ifndef V
 QUIET_CC = @printf '    cyzi->QUIETCC %b %b\n' $(CCCOLOR)CC$(ENDCOLOR) $(SRCCOLOR)$@$(ENDCOLOR) 1>&2;
@@ -220,7 +220,7 @@ all: $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME) $(REDIS_CLI_NAME) $(REDIS_BENCH
 	@echo ""
 
 Makefile.dep:
-	-$(REDIS_CC)  -rdynamic -g -MM *.c > Makefile.dep 2> /dev/null || true
+	-$(REDIS_CC) -rdynamic -g -Wunused-variable -MM *.c > Makefile.dep 2> /dev/null || true
 
 ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
 -include Makefile.dep
