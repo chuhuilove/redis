@@ -3,7 +3,6 @@
 #include<stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <regex.h>
 
 char ** initData();
@@ -21,33 +20,19 @@ int stack_num = 8;
 
 
 char * commands[stack_num];
-int commandIndex=0;
-char * currentAddr;
-for(int i=stack_num-1;i>=0;i--){
+char * currentFunName;
+for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
+    currentFunName=stacktrace[i];
+    char * resolvedAddr=resolveAddr(currentFunName);
 
-    char * resolvedAddr=resolveAddr(stacktrace[i]);
-
-    char commandBuf[256];
+    char commandBuf[256]={0};
     int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
 
     char *command=commandBuf;
     commands[commandIndex]=command;
-    printf(" %s resolved addr is: %s,command is:%s\n",stacktrace[i],resolvedAddr,commands[commandIndex]);
-    commandIndex++;
+    printf(" %s resolved addr is: %s,command is:%s\n",currentFunName,resolvedAddr,commands[commandIndex]);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*
