@@ -71,11 +71,9 @@ char * buildCommand(int commandLen,int commandCount,char ** commands){
 
     int allCommandsIndex=0;
     for(int i=0;i<commandCount;i++){
-
-        while(*commandCount[i]!='\0'){
-            allCommands[allCommandsIndex++]=*commandCount[i]++;
+        while(*commands[i]!='\0'){
+            allCommands[allCommandsIndex++]=*commands[i]++;
         }
-
     }
     allCommands[commandLen+1]='\0';
     char * command=allCommands;
