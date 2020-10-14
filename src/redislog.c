@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <execinfo .h>
-#include <stdlib .h>
+#include <execinfo.h>
+#include <stdlib.h>
 
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
