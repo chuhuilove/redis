@@ -28,11 +28,11 @@ for(int i=stack_num-1;i>=0;i--){
 
     char * resolvedAddr=resolveAddr(stacktrace[i]);
 
-    char command[128];
-    int commandLength=sprintf(command,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-    command[commandLength]='\0';
-    commands[commandIndex]=command;
+    char commandBuf[256];
+    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
 
+    char *command=commandBuf;
+    commands[commandIndex]=command;
     printf(" %s resolved addr is: %s,command is:%s\n",stacktrace[i],resolvedAddr,commands[commandIndex]);
     commandIndex++;
 }
