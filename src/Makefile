@@ -258,33 +258,33 @@ endif
 
 # redis-server
 $(REDIS_SERVER_NAME): $(REDIS_SERVER_OBJ)
-	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a $(FINAL_LIBS)
+	$(REDIS_LD) -rdynamic -g -Wunused-variable -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/lua/src/liblua.a $(FINAL_LIBS)
 
 # redis-sentinel
 $(REDIS_SENTINEL_NAME): $(REDIS_SERVER_NAME)
-	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME)
+	$(REDIS_INSTALL) -rdynamic -g -Wunused-variable  $(REDIS_SERVER_NAME) $(REDIS_SENTINEL_NAME)
 
 # redis-check-rdb
 $(REDIS_CHECK_RDB_NAME): $(REDIS_SERVER_NAME)
-	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(REDIS_CHECK_RDB_NAME)
+	$(REDIS_INSTALL) -rdynamic -g -Wunused-variable  $(REDIS_SERVER_NAME) $(REDIS_CHECK_RDB_NAME)
 
 # redis-check-aof
 $(REDIS_CHECK_AOF_NAME): $(REDIS_SERVER_NAME)
-	$(REDIS_INSTALL) $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME)
+	$(REDIS_INSTALL) -rdynamic -g -Wunused-variable  $(REDIS_SERVER_NAME) $(REDIS_CHECK_AOF_NAME)
 
 # redis-cli
 $(REDIS_CLI_NAME): $(REDIS_CLI_OBJ)
-	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/linenoise/linenoise.o $(FINAL_LIBS)
+	$(REDIS_LD) -rdynamic -g -Wunused-variable  -o $@ $^ ../deps/hiredis/libhiredis.a ../deps/linenoise/linenoise.o $(FINAL_LIBS)
 
 # redis-benchmark
 $(REDIS_BENCHMARK_NAME): $(REDIS_BENCHMARK_OBJ)
-	$(REDIS_LD) -o $@ $^ ../deps/hiredis/libhiredis.a $(FINAL_LIBS)
+	$(REDIS_LD) -rdynamic -g -Wunused-variable  -o $@ $^ ../deps/hiredis/libhiredis.a $(FINAL_LIBS)
 
 dict-benchmark: dict.c zmalloc.c sds.c siphash.c
-	$(REDIS_CC) $(FINAL_CFLAGS) $^ -D DICT_BENCHMARK_MAIN -o $@ $(FINAL_LIBS)
+	$(REDIS_CC) $(FINAL_CFLAGS) $^ -D DICT_BENCHMARK_MAIN -rdynamic -g -Wunused-variable  -o $@ $(FINAL_LIBS)
 
 DEP = $(REDIS_SERVER_OBJ:%.o=%.d) $(REDIS_CLI_OBJ:%.o=%.d) $(REDIS_BENCHMARK_OBJ:%.o=%.d)
--include $(DEP)  -rdynamic -g -Wunused-variable 
+-include $(DEP)  
 
 # Because the jemalloc.h header is generated as a part of the jemalloc build,
 # building it should complete before building any other object. Instead of
