@@ -20,17 +20,20 @@ char ** stacktrace= initData();
 int stack_num = 8;
 
 
-char * commands[];
+char * commands[stack_num];
 int commandIndex=0;
-char  command[128];
+char * currentAddr;
 for(int i=stack_num-1;i>=0;i--){
 
-    char * currentAddr=stacktrace[i];
-    char * resolvedAddr=resolveAddr(currentAddr);
-//    printf("%s resolved addr is: %s\n",currentAddr,resolvedAddr);
-    sprintf(command,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+
+    char * resolvedAddr=resolveAddr(stacktrace[i]);
+
+    char command[128];
+    int commandLength=sprintf(command,"addr2line -a %s -e %s -f -C;\0",stacktrace[i],CYZI_REDIS_SERVER_ABSTRACT_PATH);
+    command[commandLength]='\0';
     commands[commandIndex]=command;
-    printf(" %s resolved addr is: %s,command is:%s\n",currentAddr,resolvedAddr,commands[commandIndex]);
+
+    printf(" %s resolved addr is: %s,command is:%s\n",stacktrace[i],resolvedAddr,commands[commandIndex]);
     commandIndex++;
 }
 
