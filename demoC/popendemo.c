@@ -23,7 +23,7 @@ for(int i=stack_num-1;i>=0;i--){
 
 char * resolvedAddr=resolveAddr(stacktrace[i]);
 printf("%s resolved addr is: %s\n",stacktrace[i],resolvedAddr);
-free(resolvedAddr);
+
 }
 
 
@@ -76,7 +76,8 @@ char ** initData(){
 
   char * resolveAddr(char * originalStr){
 
-	char * result=(char *)malloc(64) ;
+	char result[64];
+	memset(array, 0, 64);
 
 	int lastChar=']';
 	int isAddr=0;
@@ -91,7 +92,8 @@ char ** initData(){
 		}
 	}
 	result[j]=lastChar;
-	return result;
+	char * actualAddr=result;
+	return actualAddr;
 }
 
 
