@@ -45,21 +45,21 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     char * command=buildCommand(commandLen,stack_num,commands);
 
-    printf("command is:%s\n",command);
+  //  printf("command is:%s\n",command);
 
-//    FILE *fp = NULL;
-//	char data[200] = {'0'};
-//	fp = popen(command, "r");
-//	if (fp == NULL)
-//	{
-//		printf("popen error!\n");
-//		return 1;
-//	}
-//	while (fgets(data, sizeof(data), fp) != NULL)
-//	{
-//		printf("%s", data);
-//	}
-//	pclose(fp);
+    FILE *fp = NULL;
+	char data[200] = {'0'};
+	fp = popen(command, "r");
+	if (fp == NULL)
+	{
+		printf("popen error!\n");
+		return 1;
+	}
+	while (fgets(data, sizeof(data), fp) != NULL)
+	{
+		printf("%s", data);
+	}
+	pclose(fp);
 
 return 0;
 }
