@@ -45,7 +45,7 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     char * command=buildCommand(commandLen,stack_num,commands);
 
-  //  printf("command is:%s\n",command);
+    printf("command is:%s\n",command);
 
     FILE *fp = NULL;
 	char data[200] = {'0'};
@@ -57,7 +57,7 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 	}
 	while (fgets(data, sizeof(data), fp) != NULL)
 	{
-		printf("%s", data);
+		printf("executed result is: %s\n", data);
 	}
 	pclose(fp);
 
