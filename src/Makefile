@@ -130,7 +130,7 @@ ifeq ($(uname_S),DragonFly)
 	FINAL_LIBS+= -lpthread -lexecinfo
 else
 	# All the other OSes (notably Linux)
-	FINAL_LDFLAGS+= -rdynamic
+	FINAL_LDFLAGS+= -rdynamic -g -Wunused-variable
 	FINAL_LIBS+=-ldl -pthread -lrt
 endif
 endif
