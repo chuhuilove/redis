@@ -26,7 +26,7 @@ ifneq (,$(findstring FreeBSD,$(uname_S)))
   STD+=-Wno-c11-extensions
 endif
 endif
-WARN=-Wall -W -Wno-missing-field-initializers -rdynamic -g 
+WARN=-Wall -W -Wno-missing-field-initializers -rdynamic -g -Wunused-variable 
 OPT=$(OPTIMIZATION)
 
 PREFIX?=/usr/local
