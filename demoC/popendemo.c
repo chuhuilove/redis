@@ -21,17 +21,19 @@ int stack_num = 8;
 
 char * commands[stack_num];
 char * currentFunName;
+
 for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     currentFunName=stacktrace[i];
+    printf("xxxxxxxxxxxxx start resolve funcation  is:%s",currentFunName);
     char * resolvedAddr=resolveAddr(currentFunName);
-
-    char commandBuf[256]={0};
-    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-
-    char *command=commandBuf;
-    commands[commandIndex]=command;
-    printf(" %s resolved addr is: %s,command is:%s\n",currentFunName,resolvedAddr,commands[commandIndex]);
+    printf("xxxxxxxxxxxxx current Funcation name is:%s",resolvedAddr);
+//    char commandBuf[256]={0};
+//    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+//
+//    char *command=commandBuf;
+//    commands[commandIndex]=command;
+//    printf(" %s resolved addr is: %s,command is:%s\n",currentFunName,resolvedAddr,commands[commandIndex]);
 }
 
 
