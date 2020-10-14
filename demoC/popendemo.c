@@ -34,13 +34,13 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
     currentFunName=stacktrace[i];
     //printf("xxxxxxxxxxxxx start resolve funcation  is:%s",currentFunName);
     resolvedAddr=resolveAddr(currentFunName);
-    printf("funcation name is:%s,address is: %s,123\n",currentFunName,resolvedAddr);
-//    char commandBuf[256]={0};
-//    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-//
-//    char *command=commandBuf;
-//    commands[commandIndex]=command;
-//    printf(" %s resolved addr is: %s,command is:%s\n",currentFunName,resolvedAddr,commands[commandIndex]);
+    printf("funcation name is:%s,address is: %s\n",currentFunName,resolvedAddr);
+    char commandBuf[256]={0};
+    int commandLength=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+
+    char *command=commandBuf;
+    commands[commandIndex]=command;
+    printf(" %s resolved addr is: %s,command is:%s\n",currentFunName,resolvedAddr,commands[commandIndex]);
 }
 
 
