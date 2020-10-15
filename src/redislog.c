@@ -85,7 +85,7 @@ void printStacktrace(FILE * fp)
 
     char ** funAdds;
 
-    for (int i = stack_num-1; i <>=0; i--)
+    for (int i = stack_num-1; i>=0; i--)
     {
         fprintf(fp,"%s\n", stacktrace[i]);
     }

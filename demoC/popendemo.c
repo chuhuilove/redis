@@ -6,8 +6,8 @@
 #include <stdarg.h>
 
 //void initData();
-char *resolveAddr();
-char * buildCommand(int commandLen,int commandCount,char * commands[]);
+char *resolveAddr(const char * original);
+char * buildCommand(int commandLen,int commandCount,const char * commands[]);
 
 
 #define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
@@ -25,10 +25,10 @@ char *stacktrace[8]={                   "src/redis-server(print_stacktrace+0x25)
                                        "/lib64/libc.so.6(__libc_start_main+0xf5) [0x7f3dc0129555]",
                                        "src/redis-server() [0x42c319]"};
 //initData(&stacktrace);
-int stack_num = 8;
+const int stack_num = 8;
 
 
-char * commands[stack_num];
+const char * commands[8];
 char * currentFunName;
 char * resolvedAddr;
 int commandLen=0;
@@ -37,9 +37,9 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
     currentFunName=stacktrace[i];
     resolvedAddr=resolveAddr(currentFunName);
     char commandBuf[256]={0};
-    commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;\0",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+    commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
     printf(" resolved command is %s\n",commandBuf);
-    commands[commandIndex++]=commandBuf;
+    commands[commandIndex]=commandBuf;
 }
 
     char * command=buildCommand(commandLen,stack_num,commands);
@@ -64,13 +64,14 @@ return 0;
 }
 
 
-char * buildCommand(int commandLen,int commandCount,char *commands[]){
+char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
-    char  allCommands[commandLen+1];
+    char  allCommands[4096];
 
     int allCommandsIndex=0;
     for(int i=0;i<commandCount;i++){
         printf(" start resolve commands[%d],command is %s\n",i,commands[i]);
+
         while(*commands[i]!='\0'){
             allCommands[allCommandsIndex++]=*commands[i]++;
         }
@@ -85,7 +86,7 @@ char * buildCommand(int commandLen,int commandCount,char *commands[]){
 
 
 
-  char * resolveAddr(char * originalStr){
+  char * resolveAddr(const char * originalStr){
 	char result[64];
 
 	int lastChar=']';
