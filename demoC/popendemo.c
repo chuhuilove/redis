@@ -44,7 +44,7 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
     printf(" resolved command is %s\n",commandBuf);
 
     char * tempCommands=commandBuf;
-    commands[commandIndex]=tempCommands;
+    commands++=tempCommands;
 }
 
     char * command=buildCommand(commandLen,stack_num,commands);
