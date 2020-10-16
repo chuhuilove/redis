@@ -16,7 +16,7 @@ int main(){
 
 
 
-char *stacktrace[8]={                  "src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
+char ** stacktrace={                  "src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
                                        "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]",
                                        "src/redis-server(cyziServerLog+0xbe) [0x4c106e]",
                                        "src/redis-server(createClient+0x80) [0x441970]",
