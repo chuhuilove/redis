@@ -27,10 +27,10 @@ char *stacktrace[9]={                  "src/redis-server(print_stacktrace+0x25) 
                                        "src/redis-server() [0x42c319]"
                                        };
 //initData(&stacktrace);
-const int stack_num = 8;
+const int stack_num = 9;
 
 
-const char *commands[];
+const char *commands[9];
 char * currentFunName;
 char * resolvedAddr;
 int commandLen=0;
