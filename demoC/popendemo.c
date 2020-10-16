@@ -7,7 +7,7 @@
 
 //void initData();
 char *resolveAddr(const char * original);
-char * buildCommand(int commandLen,int commandCount,const char ** commands);
+char * buildCommand(int commandLen,int commandCount,const char *commands[]);
 
 
 #define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
@@ -16,7 +16,7 @@ int main(){
 
 
 
-char ** stacktrace={                  "src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
+char *stacktrace[9]={                  "src/redis-server(print_stacktrace+0x25) [0x4c0c45]",
                                        "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]",
                                        "src/redis-server(cyziServerLog+0xbe) [0x4c106e]",
                                        "src/redis-server(createClient+0x80) [0x441970]",
@@ -30,11 +30,11 @@ char ** stacktrace={                  "src/redis-server(print_stacktrace+0x25) [
 const int stack_num = 8;
 
 
-const char **commands;
+const char *commands[];
 char * currentFunName;
 char * resolvedAddr;
 int commandLen=0;
-char * tempCommands=NULL;
+
 for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     currentFunName=stacktrace[i];
@@ -42,7 +42,8 @@ for(int i=stack_num-1,commandIndex=0;i>=0;i--,commandIndex++){
     char commandBuf[256]={0};
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
     printf(" resolved command is %s\n",commandBuf);
-    tempCommands=commandBuf;
+
+    char * tempCommands=commandBuf;
     commands[commandIndex]=tempCommands;
 }
 
@@ -68,7 +69,7 @@ return 0;
 }
 
 
-char * buildCommand(int commandLen,int commandCount,const char **commands){
+char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
     char  allCommands[4096];
 
