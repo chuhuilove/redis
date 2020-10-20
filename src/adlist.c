@@ -60,7 +60,6 @@ list *listCreate(void)
     list->dup = NULL;
     list->free = NULL;
     list->match = NULL;
-	//cyziServerLog(CYZI_LL_WARNING, "create list success...");
     return list;
 }
 

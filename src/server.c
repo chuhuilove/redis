@@ -70,7 +70,7 @@ double R_Zero, R_PosInf, R_NegInf, R_Nan;
 /*================================= Globals ================================= */
 
 /* Global vars */
-struct redisServer server; /* Server global state */
+struct redisServer server; /* 服务全局状态 */
 volatile unsigned long lru_clock; /* Server global current LRU time. */
 
 

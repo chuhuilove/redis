@@ -14,8 +14,8 @@ void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 char* resolveAddr(const char * original);
 char * buildCommand(const char *commands[],int rows,int commandCount);
 void cyziServerLogRaw(int level, const char *msg);
-void printStacktrace_linux();
-void printStacktrace_mac();
+void printStacktrace_linux(FILE * fp);
+void printStacktrace_mac(FILE * fp);
 
 void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
@@ -70,7 +70,22 @@ void cyziServerLogRaw(int level, const char *msg) {
         fprintf(fp,"%d:%c %s %c %s\n",
             (int)getpid(),role_char, buf,c[level],msg);
     }
-    printStacktrace_linux(fp);
+
+
+
+    // 本段代码来自debug.c：894
+#if defined(__APPLE__)
+  printStacktrace_mac(fp);
+#elif defined(__linux__)
+    /* Linux */
+   printStacktrace_linux(fp);
+#else
+
+#endif
+
+
+
+
     fprintf(fp,"\n");
     fflush(fp);
     //文件频繁的打开与关闭,可能会造成Redis性能整体的下降
@@ -143,8 +158,34 @@ char * buildCommand(const char *commands[],int rows,int commandCount){
     return result;
 }
 
-void printStacktrace_mac(){
+void printStacktrace_mac(FILE * fp){
+    // 明天搞这玩意 累死哥哥了。。。2020年10月20日22:19:50
 
+//    7   ???                                 0x0000000000000001 0x0 + 1
+//    6   libdyld.dylib                       0x00007fff6a38ecc9 start + 1
+//    5   redis-server                        0x00000001082fdb67 main + 1367
+//    4   redis-server                        0x00000001082f92c5 initServer + 1893
+//    3   redis-server                        0x0000000108363021 scriptingInit + 1409
+//    2   redis-server                        0x000000010830e9d4 createClient + 164
+//    1   redis-server                        0x00000001083a7748 cyziServerLog + 200
+//    0   redis-server                        0x00000001083a7b27 cyziServerLogRaw + 951
+
+
+
+    int size = 512;
+    void * array[size];
+    int stack_num = backtrace(array, size);
+    char ** stacktrace = backtrace_symbols(array, stack_num);
+
+
+
+    for(int i=stack_num-1;i>=0;i--){
+
+        fprintf(fp,"%d,%s\n",(int)getpid(),stacktrace[i]);
+    }
+
+
+    free(stacktrace);
 }
 
 
