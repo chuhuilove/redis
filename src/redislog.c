@@ -104,7 +104,7 @@ void printStacktrace(FILE * fp)
 
 char *joincommand(const char* functionaddress){
 
-     char result[256];
+     static char result[256];
        sprintf(result,ADDR2LINE_COMMAND_TEMPLATE,functionaddress,CYZI_REDIS_SERVER_ABSTRACT_PATH);
       return result;
 }
