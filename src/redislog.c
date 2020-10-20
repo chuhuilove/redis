@@ -11,7 +11,8 @@
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 char* retrievalAddr(const char* originalStr);
-char *joincommand(const char* functionaddress);
+char* joincommand(char* singleCommand,const char* functionaddress);
+char* joinallcommand(char* originalCommand,const char*singleCommand);
 
 void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
@@ -84,17 +85,22 @@ void printStacktrace(FILE * fp)
 
 
 
+    char *all_addr2lineCommand[stack_num]={};
 
-
-    for (int i = stack_num-1; i>=0; i--)
+    int sumlength=0;
+    for (int i = stack_num-1,commandIndex=0; i>=0; i--,commandIndex++)
     {
 
-         char *functionName=*(stacktrace+i);
-         char * resolvedAddr=retrievalAddr(functionName);
-         char * fullcommand=joincommand(resolvedAddr);
+         char* functionName=*(stacktrace+i);
+         char* resolvedAddr=retrievalAddr(functionName);
 
+         char singleCommandBuf[256]; // 解析出这一次的命令....
+         sumlength+=sprintf(singleCommandBuf,ADDR2LINE_COMMAND_TEMPLATE,functionaddress,CYZI_REDIS_SERVER_ABSTRACT_PATH);
 
-         fprintf(fp,"full command is %s,size=%ld\n", fullcommand,sizeof(fullcommand));
+         char * singleCommand=singleCommandBuf;
+         *(all_addr2lineCommand+commandIndex)=singleCommand;
+
+         fprintf(fp,"full command is %s,size=%ld\n", singleCommand,sizeof(singleCommand));
     }
 
 
@@ -102,11 +108,16 @@ void printStacktrace(FILE * fp)
     free(stacktrace);
 }
 
-char *joincommand(const char* functionaddress){
+char* joinallcommand(char* originalCommand,const char*singleCommand){
 
-     static char result[256];
-       sprintf(result,ADDR2LINE_COMMAND_TEMPLATE,functionaddress,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-      return result;
+
+return "";
+}
+
+int joincommand(char* singleCommand,const char* functionaddress){
+
+
+return 0;
 }
 
 char* retrievalAddr(const char* originalStr){
