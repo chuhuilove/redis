@@ -13,7 +13,8 @@ void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 
 char* resolveAddr(const char * original);
 char * buildCommand(const char *commands[],int rows,int commandCount);
-
+void cyziServerLogRaw(int level, const char *msg);
+void printStacktrace();
 
 void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
