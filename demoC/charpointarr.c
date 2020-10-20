@@ -107,7 +107,7 @@ char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
 
 
-  int  resolveAddr(const char * originalStr){
+char* resolveAddr(const char * originalStr){
     static char result[64];
 	int lastChar=']';
 	int isAddr=0;
