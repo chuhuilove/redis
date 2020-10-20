@@ -13,7 +13,7 @@ generIntArr(original);
 printf("add arr before:\n");
 printfArr(original,INT_ARR_MAX_LENGTH);
 
-valuePlus(original,INT_ARR_MAX_LENGTH,10);
+valuePlus(original,INT_ARR_MAX_LENGTH,101);
 
 printf("add 10 after:\n");
 
@@ -26,15 +26,18 @@ void  valuePlus(int * original,int arraylen,int valueplus)
 {
     for(int i=0;i<arraylen;i++)
     {
-        original[i]+=valueplus;
+        *original+=valueplus;
+	original++;
     }
 }
 void printfArr(int * original,int arraylen)
 {
     for(int i=0;i<arraylen;i++)
     {
-        puts(*original++);
+        //printf("%d ",*original++);  // *original; original++;
+        //printf("%d ",original[i]);  // 直接将其当做数组来操作
+        printf("%d ",*(original+i));  // 数组名,向后偏移的位置
     }
-    puts("");
+    printf("\n");
 
 }

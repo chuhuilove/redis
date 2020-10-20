@@ -7,7 +7,7 @@
 
 void generIntArr(int *);
 
-void generCharArr(char *);
+void generCharArr(char * result[]);
 
 
 #endif // GENARR_H
