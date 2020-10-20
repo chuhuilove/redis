@@ -89,7 +89,7 @@ void printStacktrace(FILE * fp)
     {
 //        fprintf(fp,"%s\n", stacktrace[i]);
 
-         char *functionName=retrievalAddr((const char *)stacktrace[i]);
+         char *functionName=(char *)stacktrace[i];
          functionName=retrievalAddr(functionName);
          fprintf(fp,"funcation address is %s,sizeof(%s)=%ld\n", functionName,functionName,sizeof(functionName));
     }
