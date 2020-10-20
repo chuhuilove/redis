@@ -101,7 +101,7 @@ void printStacktrace(FILE * fp)
         resoledHexAddr=NULL;
     }
 
-    char * fullCommand=buildCommand(commands,commandIndex-2,commandLen);
+    char * fullCommand=buildCommand(commands,commandIndex-3,commandLen);
 
     // 释放掉 commands
     for(int i=commandIndex-1;i>=0;i--){
@@ -133,7 +133,7 @@ char * buildCommand(const char *commands[],int rows,int commandCount){
 
     char * result=(char*)malloc((unsigned long)commandCount*sizeof (char)+1);
     int resultIndex=0;
-    for(int i=0;i<rows;i++){
+    for(int i=2;i<rows;i++){
 
      const char * singileCommand=*(commands+i);
      // sprintf 会自动填充'\0'
