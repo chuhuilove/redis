@@ -54,7 +54,7 @@ void generCharArr_1(char (*result)[10]){
 
 
 }
-void generCharArr_2(char (*result)[100]){
+void generCharArr_2(char *result[]){
 
 
 result[0]="src/redis-server(print_stacktrace+0x25) [0x4c0c45]\n";
