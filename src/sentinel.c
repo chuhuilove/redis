@@ -50,9 +50,9 @@ extern SSL_CTX *redis_tls_ctx;
 
 #define REDIS_SENTINEL_PORT 26379
 
-/* ======================== Sentinel global state =========================== */
+/* ======================== 哨兵全局状态Sentinel global state =========================== */
 
-/* Address object, used to describe an ip:port pair. */
+/* 地址对象,用来描述一个ip:port对. */
 typedef struct sentinelAddr {
     char *ip;
     int port;
