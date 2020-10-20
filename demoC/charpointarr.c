@@ -43,7 +43,7 @@ for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
     char *currentFunName=stacktrace[i];
     char * resoledHexAddr=resolveAddr(currentFunName);
     int intarr[100]={0};
-    printf("resoledHexAddr is:%p,intarr is:%p,currentFunName is %p",resoledHexAddr,intarr,currentFunName);
+    printf("resoledHexAddr is:%p,intarr is:%p,currentFunName is %p\n",resoledHexAddr,intarr,currentFunName);
 
     char commandBuf[256]={0};
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
@@ -111,6 +111,7 @@ char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
 char* resolveAddr(const char * originalStr){
     static char result[64]={0};
+    printf(" resoleAddr array address is:%p,originalStr is%p\n",result,originalStr);
 	int lastChar=']';
 	int isAddr=0;
 	int j=0;
