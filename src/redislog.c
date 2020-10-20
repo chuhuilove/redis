@@ -14,7 +14,8 @@ void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 char* resolveAddr(const char * original);
 char * buildCommand(const char *commands[],int rows,int commandCount);
 void cyziServerLogRaw(int level, const char *msg);
-void printStacktrace();
+void printStacktrace_linux();
+void printStacktrace_mac();
 
 void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
@@ -58,7 +59,7 @@ void cyziServerLogRaw(int level, const char *msg) {
         int off;
         struct timeval tv;
         int role_char='Y';
-        pid_t pid = getpid();
+       // pid_t pid = getpid();
 
         gettimeofday(&tv,NULL);
         struct tm tm;
@@ -69,9 +70,10 @@ void cyziServerLogRaw(int level, const char *msg) {
         fprintf(fp,"%d:%c %s %c %s\n",
             (int)getpid(),role_char, buf,c[level],msg);
     }
-	printStacktrace(fp);
+    printStacktrace_linux(fp);
+    fprintf(fp,"\n");
     fflush(fp);
-	//文件频繁的打开与关闭,会造成Redis性能整体的下降
+    //文件频繁的打开与关闭,可能会造成Redis性能整体的下降
     if (!log_to_stdout) fclose(fp);
    
 }
@@ -79,7 +81,7 @@ void cyziServerLogRaw(int level, const char *msg) {
 
 
 // 这段代码在mac上需要进一步处理，就需要学习区分Linux和mac操作系统了
-void printStacktrace(FILE * fp)
+void printStacktrace_linux(FILE * fp)
 {
 
     int size = 512;
@@ -110,9 +112,6 @@ void printStacktrace(FILE * fp)
     }
 
 
-
-
-
     FILE * executeResult=NULL;
     char data[200] = {'0'};
     executeResult = popen(fullCommand, "r");
@@ -126,7 +125,6 @@ void printStacktrace(FILE * fp)
         fprintf(fp,"%s",data);
     }
     pclose(executeResult);
-
     free(stacktrace);
 }
 
@@ -145,7 +143,9 @@ char * buildCommand(const char *commands[],int rows,int commandCount){
     return result;
 }
 
+void printStacktrace_mac(){
 
+}
 
 
 

@@ -26,9 +26,7 @@
 
 void cyziServerLog(int loglevel,char * message,...);
 
-void cyziServerLogRaw(int level, const char *msg);
 
-void printStacktrace();
 
 
 
