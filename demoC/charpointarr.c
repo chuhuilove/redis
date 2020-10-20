@@ -39,7 +39,7 @@ for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     char *currentFunName=stacktrace[i];
     char resoledHexAddr[64];
-    int hexLen=resolveAddr(currentFunName,resoleAddr);
+    int hexLen=resolveAddr(currentFunName,resoledHexAddr);
     char commandBuf[256];
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
     printf(" resolved command is %s,commandBuf address:%p,resolveAddr address:%p\n",commandBuf,commandBuf,resoledHexAddr);
