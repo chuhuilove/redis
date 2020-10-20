@@ -11,8 +11,10 @@
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 char* retrievalAddr(const char* originalStr);
-char* joincommand(char* singleCommand,const char* functionaddress);
+int joincommand(char* singleCommand,const char* functionaddress);
 char* joinallcommand(char* originalCommand,const char*singleCommand);
+
+
 
 void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
@@ -84,7 +86,6 @@ void printStacktrace(FILE * fp)
     char ** stacktrace = backtrace_symbols(array, stack_num);
 
 
-
     char *all_addr2lineCommand[stack_num]={};
 
     int sumlength=0;
@@ -102,6 +103,12 @@ void printStacktrace(FILE * fp)
 
          fprintf(fp,"full command is %s,size=%ld\n", singleCommand,sizeof(singleCommand));
     }
+
+    for(int i=0;i<stack_num;i++){
+        printf("i=%d,commands is:%s\n",i,all_addr2lineCommand[i]);
+    }
+
+
 
 
 
