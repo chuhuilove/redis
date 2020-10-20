@@ -48,7 +48,7 @@ for(int i=CHAR_ARR_MAX_LENGTH-1;i>=0;i--,commandIndex++){
     resoledHexAddr=NULL;
 }
 
-char * fullCommand=buildCommand(commands,commandIndex,commandLen);
+char * fullCommand=buildCommand(commands,commandIndex-2,commandLen);
 
 // 释放掉 commands
 for(int i=commandIndex-1;i>=0;i--){

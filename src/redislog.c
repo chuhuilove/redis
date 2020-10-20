@@ -92,7 +92,6 @@ void printStacktrace(FILE * fp)
 
     for(int i=stack_num-1;i>=0;i--,commandIndex++){
 
-        fprintf(fp,"%s\n",stacktrace[i]);
         char * resoledHexAddr=resolveAddr((char*)stacktrace[i]);
         char * commandBuf=(char*)malloc(128*sizeof (char));
         commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
@@ -102,7 +101,7 @@ void printStacktrace(FILE * fp)
         resoledHexAddr=NULL;
     }
 
-    char * fullCommand=buildCommand(commands,commandIndex,commandLen);
+    char * fullCommand=buildCommand(commands,commandIndex-2,commandLen);
 
     // 释放掉 commands
     for(int i=commandIndex-1;i>=0;i--){
@@ -113,6 +112,19 @@ void printStacktrace(FILE * fp)
 
 
 
+    FILE * executeResult=NULL;
+    char data[200] = {'0'};
+    executeResult = popen(fullCommand, "r");
+    if (fp == NULL)
+    {
+        printf("popen error!\n");
+        return ;
+    }
+    while (fgets(data, sizeof(data), executeResult) != NULL)
+    {
+        fprintf(fp,"%s\n",data);
+    }
+    pclose(executeResult);
 
     free(stacktrace);
 }
