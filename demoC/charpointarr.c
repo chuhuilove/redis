@@ -110,7 +110,7 @@ char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
 
 char* resolveAddr(const char * originalStr){
-    static char result[64]={0};
+     char result[64]={0};
     printf(" resoleAddr array address is:%p,originalStr is%p\n",result,originalStr);
 	int lastChar=']';
 	int isAddr=0;

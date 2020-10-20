@@ -83,11 +83,14 @@ void printStacktrace(FILE * fp)
     char ** stacktrace = backtrace_symbols(array, stack_num);
 
 
-    char ** funAdds;
+
 
     for (int i = stack_num-1; i>=0; i--)
     {
-        fprintf(fp,"%s\n", stacktrace[i]);
+//        fprintf(fp,"%s\n", stacktrace[i]);
+
+         char *resolvedAdd=retrievalAddr(stacktrace[i]);
+         fprintf(fp,"funcation address is %s,sizeof(%s)=%d\n", resolvedAdd,resolvedAdd,sizeof(resolvedAdd));
     }
 
 
@@ -96,7 +99,7 @@ void printStacktrace(FILE * fp)
 }
 
 
-static char* retrievalAddr(char* originalStr){
+ char* retrievalAddr(const char* originalStr){
 	char result [64];
 
 	int lastChar=']';
@@ -111,6 +114,7 @@ static char* retrievalAddr(char* originalStr){
 			isAddr=1;			
 		}	
 	}
+	char * address=result;
 	return result;
 
 }
