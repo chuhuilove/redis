@@ -3,7 +3,7 @@
 
 
 char* resolveAddr(const char * original);
-char * buildCommand(int commandLen,int commandCount,const char *commands[]);
+char * buildCommand(const char *commands[],int rows,int commandCount);
 
 
 

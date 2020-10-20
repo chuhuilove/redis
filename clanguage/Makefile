@@ -7,8 +7,8 @@ CFLAGES= -g
 
 all: loopcreatevar
 
-loopcreatevar: loopcreatevar.c
-    $(CC) $(CFLAGES)  loopcreatevar.c   -o loopcreatevar
+loopcreatevar: loopcreatevariables.c
+	$(CC) $(CFLAGES)  loopcreatevariables.c   -o loopcreatevar
 
 clean:
-    rm -rf *.o loopcreatevar
+	rm -rf *.o loopcreatevar

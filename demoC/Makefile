@@ -17,7 +17,7 @@ intarr: intarrpoint.c genarr.o
 	$(CC) $(CFLAGS) intarrpoint.c genarr.o -o intarr
 
 inttwoarr: inttwoarrpoint.c genarr.o
-    $(CC) $(CFLAGS) inttwoarrpoint.c genarr.o -o inttwoarr
+	$(CC) $(CFLAGS) inttwoarrpoint.c genarr.o -o inttwoarr
 
 genarr.o: genarr.c
 	$(CC) $(CFLAGS) -c genarr.c
