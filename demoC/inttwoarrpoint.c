@@ -9,7 +9,7 @@ int main(void)
 //#define INR_ARR_COLS_LENGTH 4
 //#define INR_ARR_ROWS_LENGTH 5
 
-int (*intarr)[INR_ARR_COLS_LENGTH];
+int intarr[INR_ARR_ROWS_LENGTH][INR_ARR_COLS_LENGTH];
 generTwoIntAtt(intarr);
 
 printfArr(intarr);
