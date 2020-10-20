@@ -48,12 +48,12 @@ typedef struct list {
     listNode *head;
     listNode *tail;
     void *(*dup)(void *ptr);
-    void (*free)(void *ptr);
-    int (*match)(void *ptr, void *key);
+    void (*free)(void *ptr);  // 函数指针,什么样的函数指针呢?带有一个参数的指针,什么样的参数呢?参数的类型是void*
+    int (*match)(void *ptr, void *key); // 函数指针,什么样的函数指针呢?带有两个参数的指针,什么样的参数呢?两个参数的类型都是void *
     unsigned long len;
 } list;
 
-/* Functions implemented as macros */
+/* 作为宏的函数实现*/
 #define listLength(l) ((l)->len)
 #define listFirst(l) ((l)->head)
 #define listLast(l) ((l)->tail)

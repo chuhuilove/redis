@@ -11,7 +11,7 @@
 }
 
 
-void generTwoIntAtt(int (*ptr)[] ){
+void generTwoIntAtt(int (*ptr)[INR_ARR_COLS_LENGTH] ){
 //int zippo[4][2];
 // 怎么解释这个二维数组
 // zippo的首元素是一个内含两个int值的数组

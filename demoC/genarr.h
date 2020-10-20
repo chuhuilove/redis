@@ -14,7 +14,7 @@ void generIntArr(int *);
 
 void generCharArr(char * result[]);
 
-void generTwoIntAtt(int (*ptr)[]);
+void generTwoIntAtt(int (*ptr)[INR_ARR_COLS_LENGTH]);
 
 
 #endif // GENARR_H
