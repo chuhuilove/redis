@@ -77,19 +77,16 @@ void cyziServerLogRaw(int level, const char *msg) {
 
 
 
+// 这段代码在mac上需要进一步处理，就需要学习区分Linux和mac操作系统了
 void printStacktrace(FILE * fp)
 {
+
     int size = 512;
     void * array[size];
     int stack_num = backtrace(array, size);
     char ** stacktrace = backtrace_symbols(array, stack_num);
 
-
-
-
-
     const char *commands[stack_num];
-
     int commandLen=0;
     int commandIndex=0;
 

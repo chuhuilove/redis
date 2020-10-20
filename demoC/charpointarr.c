@@ -68,7 +68,8 @@ for(int i=commandIndex-1;i>=0;i--){
     }
     while (fgets(data, sizeof(data), fp) != NULL)
     {
-        printf("executed result is: %s\n", data);
+
+        printf("%s", data);
     }
     pclose(fp);
 
