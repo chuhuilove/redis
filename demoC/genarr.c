@@ -22,7 +22,7 @@ void generTwoIntAtt(int (*ptr)[] ){
 
 for(int i=0;i<INR_ARR_ROWS_LENGTH;i++){
     for(int j=0;j<INR_ARR_COLS_LENGTH;j++){
-        ptr[i][j]=i+j+107;
+        *(*(ptr+i)+j)=i+j+107;
     }
 }
 
