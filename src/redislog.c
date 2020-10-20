@@ -95,6 +95,7 @@ void printStacktrace(FILE * fp)
 
     for(int i=stack_num-1;i>=0;i--,commandIndex++){
 
+        fprintf(fp,"%s",stacktrace[i]);
         char * resoledHexAddr=resolveAddr((char*)stacktrace[i]);
         char * commandBuf=(char*)malloc(128*sizeof (char));
         commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
