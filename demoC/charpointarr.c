@@ -32,22 +32,22 @@ char *stacktrace[CHAR_ARR_MAX_LENGTH]={                  "src/redis-server(print
 
 const char *commands[CHAR_ARR_MAX_LENGTH];
 
-
 int commandLen=0;
 
 for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     char *currentFunName=stacktrace[i];
     char resoledHexAddr[64];
-    int hexLen=resolveAddr(currentFunName,resoledHexAddr);
+    resolveAddr(currentFunName,resoledHexAddr);
+
     char commandBuf[256];
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-    printf(" resolved command is %s,commandBuf address:%p,resolveAddr address:%p\n",commandBuf,commandBuf,resoledHexAddr);
+    printf(" resolved command is %s,commandBuf address:%p,resoledHexAddr address:%p\n",commandBuf,commandBuf,resoledHexAddr);
 
-  //  char * tempCommands=commandBuf;
-//    commands++=tempCommands;
+    char * tempCommands=commandBuf;
+    commands[commandIndex]=tempCommands;
 }
-
+    printf("this is debug");
    // char * command=buildCommand(commandLen,stack_num,commands);
 
     //printf("command is:%s\n",command);
