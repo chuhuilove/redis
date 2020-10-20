@@ -86,7 +86,7 @@ void printStacktrace(FILE * fp)
     char ** stacktrace = backtrace_symbols(array, stack_num);
 
 
-    char *all_addr2lineCommand[stack_num]={};
+    char (*all_addr2lineCommand)[stack_num]={};
 
     int sumlength=0;
     for (int i = stack_num-1,commandIndex=0; i>=0; i--,commandIndex++)
@@ -97,8 +97,9 @@ void printStacktrace(FILE * fp)
 
          char singleCommandBuf[256]; // 解析出这一次的命令....
          sumlength+=sprintf(singleCommandBuf,ADDR2LINE_COMMAND_TEMPLATE,functionaddress,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-
          char * singleCommand=singleCommandBuf;
+
+
          *(all_addr2lineCommand+commandIndex)=singleCommand;
 
          fprintf(fp,"full command is %s,size=%ld\n", singleCommand,sizeof(singleCommand));
