@@ -10,7 +10,7 @@
 
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
-
+char* retrievalAddr(const char* originalStr);
 
 
 void cyziServerLog(int loglevel,char * message,...){
@@ -118,7 +118,6 @@ void printStacktrace(FILE * fp)
 	result[j]='\0';
 	char * address=result;
 	return address;
-
 }
 
 
