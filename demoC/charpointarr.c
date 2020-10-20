@@ -117,6 +117,6 @@ char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 		}
 	}
 	resolveAddr[j]='\0';
-	return j
+	return j;
 }
 
