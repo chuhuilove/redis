@@ -41,7 +41,7 @@ for(int i=CHAR_ARR_MAX_LENGTH-1;i>=0;i--,commandIndex++){
 
     char * resoledHexAddr=resolveAddr((char*)stacktrace[i]);
     char * commandBuf=(char*)malloc(128*sizeof (char));
-    commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+    commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C -p;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
    *(commands+commandIndex)=commandBuf;
 
     free(resoledHexAddr);
