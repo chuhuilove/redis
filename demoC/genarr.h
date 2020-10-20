@@ -3,7 +3,7 @@
 
 #define INT_ARR_MAX_LENGTH 10
 
-#define CHAR_ARR_MAX_LENGTH 12
+#define CHAR_ARR_MAX_LENGTH 10
 
 void generIntArr(int *);
 
