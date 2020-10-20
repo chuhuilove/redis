@@ -54,8 +54,8 @@ void generCharArr_1(char (*result)[10]){
 
 
 }
-void generCharArr_2(char *result[10]){
-//  result是一个内含10指针元素的的数组,每个元素都指向char的指针;
+void generCharArr_2(char **result){
+
 
 result[0]="src/redis-server(print_stacktrace+0x25) [0x4c0c45]";
 result[1]=                                                   "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]";

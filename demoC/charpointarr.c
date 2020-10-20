@@ -27,7 +27,7 @@ int main(){
 //                                       };
 
 
-char stacktrace[CHAR_ARR_MAX_LENGTH][CHAR_ARR_MAX_LENGTH]={0};
+char **stacktrace={0};
 
 generCharArr_2(stacktrace);
 
