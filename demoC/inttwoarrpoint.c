@@ -18,7 +18,7 @@ printfArr(intarr);
 return 0;
 }
 
-void printfArr(int (*ptr)[]){
+void printfArr(int (*ptr)[INR_ARR_COLS_LENGTH]){
 
 for(int i=0;i<INR_ARR_ROWS_LENGTH;i++){
 
