@@ -89,8 +89,9 @@ void printStacktrace(FILE * fp)
     {
 //        fprintf(fp,"%s\n", stacktrace[i]);
 
-         char *resolvedAdd=retrievalAddr((const char *)stacktrace[i]);
-         fprintf(fp,"funcation address is %s,sizeof(%s)=%ld\n", resolvedAdd,resolvedAdd,sizeof(resolvedAdd));
+         char *functionName=retrievalAddr((const char *)stacktrace[i]);
+         functionName=retrievalAddr(functionName);
+         fprintf(fp,"funcation address is %s,sizeof(%s)=%ld\n", functionName,functionName,sizeof(functionName));
     }
 
 
