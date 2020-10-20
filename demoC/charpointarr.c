@@ -41,21 +41,17 @@ int commandLen=0;
 for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
 
     char *currentFunName=stacktrace[i];
-    char resoledHexAddr[64];
-    resolveAddr(currentFunName,resoledHexAddr);
+    char * resoledHexAddr=resolveAddr(currentFunName);
 
     char commandBuf[256];
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
     printf(" resolved command is %s,commandBuf address:%p,resoledHexAddr address:%p\n",commandBuf,commandBuf,resoledHexAddr);
 
-    char * tempCommands=commandBuf;
-    commands[commandIndex]=tempCommands;
+//    char * tempCommands=commandBuf;
+//    commands[commandIndex]=tempCommands;
 //    commands++;
 }
-    printf("this is debug");
-    for(int i=commandIndex;i>=0;i--){
-        printf("commands[%d]=%s",i,commands[i]);
-    }
+
    // char * command=buildCommand(commandLen,stack_num,commands);
 
     //printf("command is:%s\n",command);
@@ -111,20 +107,21 @@ char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
 
 
-  int  resolveAddr(const char * originalStr,char * resolveAddr){
+  int  resolveAddr(const char * originalStr){
+    static char result[64];
 	int lastChar=']';
 	int isAddr=0;
 	int j=0;
 	for(int i=0;originalStr[i]!=lastChar;i++){
 		if(isAddr){
-			resolveAddr[j++]=originalStr[i];
+			result[j++]=originalStr[i];
 			continue;
 		}
 		if(originalStr[i]=='['){
 			isAddr=1;
 		}
 	}
-	resolveAddr[j]='\0';
-	return j;
+	result[j]='\0';
+	return result;
 }
 
