@@ -54,18 +54,18 @@ void generCharArr_1(char (*result)[10]){
 
 
 }
-void generCharArr_2(char **result){
+void generCharArr_2(char *result[100]){
 
 
-result[0]="src/redis-server(print_stacktrace+0x25) [0x4c0c45]";
-result[1]=                                                   "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]";
-result[2]=                                                   "src/redis-server(cyziServerLog+0xbe) [0x4c106e]";
-result[3]=                                                  "src/redis-server(createClient+0x80) [0x441970]";
-result[4]=                                                   "src/redis-server(scriptingInit+0x4df) [0x48654f]";
-result[5]=                                                   "src/redis-server(initServer+0x624) [0x433964]";
-result[6]=                                                   "src/redis-server(main+0x40a) [0x42bf7a]";
-result[7]=                                                   "/lib64/libc.so.6(__libc_start_main+0xf5) [0x7fd165407555]";
-result[8]=                                                   "src/redis-server() [0x42c319]";
-result[9]=            				       "src/chuhui-server() [0x98cccde3f]";
+result[0]="src/redis-server(print_stacktrace+0x25) [0x4c0c45]\n";
+result[1]=                                                   "src/redis-server(cyziServerLogRaw+0xf9) [0x4c0f79]\n";
+result[2]=                                                   "src/redis-server(cyziServerLog+0xbe) [0x4c106e]\n";
+result[3]=                                                  "src/redis-server(createClient+0x80) [0x441970]\n";
+result[4]=                                                   "src/redis-server(scriptingInit+0x4df) [0x48654f]\n";
+result[5]=                                                   "src/redis-server(initServer+0x624) [0x433964]\n";
+result[6]=                                                   "src/redis-server(main+0x40a) [0x42bf7a]\n";
+result[7]=                                                   "/lib64/libc.so.6(__libc_start_main+0xf5) [0x7fd165407555]\n";
+result[8]=                                                   "src/redis-server() [0x42c319]\n";
+result[9]=            				       "src/chuhui-server() [0x98cccde3f]\n";
 
 }

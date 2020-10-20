@@ -27,7 +27,7 @@ int main(){
 //                                       };
 
 
-char **stacktrace={0};
+char stacktrace[10][100]={0};
 
 generCharArr_2(stacktrace);
 
