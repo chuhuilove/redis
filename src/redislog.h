@@ -21,9 +21,10 @@
 
 #define CYZI_REDIS_SERVER_ABSTRACT_PATH "/home/yunchu/redis-cyzi/src/redis-server"
 
+#define ADDR2LINE_COMMAND_TEMPLATE "addr2line -a %s -e %s -f -C;"
+
 
 void cyziServerLog(int loglevel,char * message,...);
-
 
 void cyziServerLogRaw(int level, const char *msg);
 

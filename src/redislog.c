@@ -11,7 +11,7 @@
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
 char* retrievalAddr(const char* originalStr);
-
+char *joincommand(const char* functionaddress);
 
 void cyziServerLog(int loglevel,char * message,...){
 	va_list ap;
@@ -85,13 +85,16 @@ void printStacktrace(FILE * fp)
 
 
 
+
     for (int i = stack_num-1; i>=0; i--)
     {
-//        fprintf(fp,"%s\n", stacktrace[i]);
 
          char *functionName=*(stacktrace+i);
-       char * resolvedAddr=retrievalAddr(functionName);
-         fprintf(fp,"funcation address is %s,sizeof(%s)=%ld\n", resolvedAddr,resolvedAddr,sizeof(resolvedAddr));
+         char * resolvedAddr=retrievalAddr(functionName);
+         char * fullcommand=joincommand(resolvedAddr);
+
+
+         fprintf(fp,"full command is %s,size=%ld\n", fullcommand,sizeof(fullcommand));
     }
 
 
@@ -99,8 +102,14 @@ void printStacktrace(FILE * fp)
     free(stacktrace);
 }
 
+char *joincommand(const char* functionaddress){
 
- char* retrievalAddr(const char* originalStr){
+     char result[256];
+       sprintf(result,ADDR2LINE_COMMAND_TEMPLATE,functionaddress,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+      return result;
+}
+
+char* retrievalAddr(const char* originalStr){
 static	char result [64];
 	int lastChar=']';
 	int isAddr=0;
