@@ -2,7 +2,7 @@
 #define CHARPOINTARR_H
 
 
-char *resolveAddr(const char * original);
+int resolveAddr(const char * original,char * resolveAddr);
 char * buildCommand(int commandLen,int commandCount,const char *commands[]);
 
 

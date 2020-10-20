@@ -31,14 +31,15 @@ char *stacktrace[CHAR_ARR_MAX_LENGTH]={                  "src/redis-server(print
 
 
 const char *commands[CHAR_ARR_MAX_LENGTH];
-char * currentFunName;
+
 char * resolvedAddr;
 int commandLen=0;
 
 for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
 
-    currentFunName=stacktrace[i];
-    resolvedAddr=resolveAddr(currentFunName);
+    char *currentFunName=stacktrace[i];
+    char resoleAddr[64];
+    int hexLen=resolveAddr(currentFunName,resoleAddr);
     char commandBuf[256];
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resolvedAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
     printf(" resolved command is %s,commandBuf address:%p,resolveAddr address:%p\n",commandBuf,commandBuf,resolveAddr);
@@ -102,23 +103,20 @@ char * buildCommand(int commandLen,int commandCount,const char *commands[]){
 
 
 
-  char * resolveAddr(const char * originalStr){
-	char result[64];
-
+  int  resolveAddr(const char * originalStr,char * resolveAddr){
 	int lastChar=']';
 	int isAddr=0;
 	int j=0;
 	for(int i=0;originalStr[i]!=lastChar;i++){
 		if(isAddr){
-			result[j++]=originalStr[i];
+			resolveAddr[j++]=originalStr[i];
 			continue;
 		}
 		if(originalStr[i]=='['){
 			isAddr=1;
 		}
 	}
-	result[j]='\0';
-	char * actualAddr=result;
-	return actualAddr;
+	resolveAddr[j]='\0';
+	return j
 }
 
