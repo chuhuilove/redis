@@ -90,7 +90,7 @@ void printStacktrace(FILE * fp)
 //        fprintf(fp,"%s\n", stacktrace[i]);
 
          char *resolvedAdd=retrievalAddr((char *)stacktrace[i]);
-         fprintf(fp,"funcation address is %s,sizeof(%s)=%d\n", resolvedAdd,resolvedAdd,sizeof(resolvedAdd));
+         fprintf(fp,"funcation address is %s,sizeof(%s)=%ld\n", resolvedAdd,resolvedAdd,sizeof(resolvedAdd));
     }
 
 
