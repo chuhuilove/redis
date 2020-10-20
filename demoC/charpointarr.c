@@ -48,11 +48,14 @@ for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
     commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
     printf(" resolved command is %s,commandBuf address:%p,resoledHexAddr address:%p\n",commandBuf,commandBuf,resoledHexAddr);
 
-//    char * tempCommands=commandBuf;
-//    commands=tempCommands;
+    char * tempCommands=commandBuf;
+    commands[commandIndex]=tempCommands;
 //    commands++;
 }
     printf("this is debug");
+    for(int i=commandIndex;i>=0;i--){
+        printf("commands[%d]=%s",i,commands[i]);
+    }
    // char * command=buildCommand(commandLen,stack_num,commands);
 
     //printf("command is:%s\n",command);
