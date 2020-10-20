@@ -10,10 +10,9 @@
 
 
 void nolocks_localtime_cyzi(struct tm *tmp, time_t t, time_t tz, int dst);
-char* retrievalAddr(const char* originalStr);
-int joincommand(char* singleCommand,const char* functionaddress);
-char* joinallcommand(char* originalCommand,const char*singleCommand);
 
+char* resolveAddr(const char * original);
+char * buildCommand(const char *commands[],int rows,int commandCount);
 
 
 void cyziServerLog(int loglevel,char * message,...){
@@ -86,28 +85,32 @@ void printStacktrace(FILE * fp)
     char ** stacktrace = backtrace_symbols(array, stack_num);
 
 
-    char (*all_addr2lineCommand)[stack_num]={};
-
-    int sumlength=0;
-    for (int i = stack_num-1,commandIndex=0; i>=0; i--,commandIndex++)
-    {
-
-         char* functionName=*(stacktrace+i);
-         char* resolvedAddr=retrievalAddr(functionName);
-
-         char singleCommandBuf[256]; // 解析出这一次的命令....
-         sumlength+=sprintf(singleCommandBuf,ADDR2LINE_COMMAND_TEMPLATE,functionaddress,CYZI_REDIS_SERVER_ABSTRACT_PATH);
-         char * singleCommand=singleCommandBuf;
 
 
-         *(all_addr2lineCommand+commandIndex)=singleCommand;
 
-         fprintf(fp,"full command is %s,size=%ld\n", singleCommand,sizeof(singleCommand));
+    const char *commands[stack_num];
+
+    int commandLen=0;
+    int commandIndex=0;
+
+    for(int i=stack_num-1;i>=0;i--,commandIndex++){
+
+        char * resoledHexAddr=resolveAddr((char*)stacktrace[i]);
+        char * commandBuf=(char*)malloc(128*sizeof (char));
+        commandLen+=sprintf(commandBuf,"addr2line -a %s -e %s -f -C;",resoledHexAddr,CYZI_REDIS_SERVER_ABSTRACT_PATH);
+       *(commands+commandIndex)=commandBuf;
+
+        free(resoledHexAddr);
+        resoledHexAddr=NULL;
     }
 
-    for(int i=0;i<stack_num;i++){
-        printf("i=%d,commands is:%s\n",i,all_addr2lineCommand[i]);
+    char * fullCommand=buildCommand(commands,commandIndex,commandLen);
+
+    // 释放掉 commands
+    for(int i=commandIndex-1;i>=0;i--){
+        free((void *)commands[i]);
     }
+
 
 
 
@@ -116,36 +119,43 @@ void printStacktrace(FILE * fp)
     free(stacktrace);
 }
 
-char* joinallcommand(char* originalCommand,const char*singleCommand){
+char * buildCommand(const char *commands[],int rows,int commandCount){
 
+    char * result=(char*)malloc((unsigned long)commandCount*sizeof (char)+1);
+    int resultIndex=0;
+    for(int i=0;i<rows;i++){
 
-return "";
+     const char * singileCommand=*(commands+i);
+     // sprintf 会自动填充'\0'
+      while(*singileCommand!='\0'){
+          result[resultIndex++]=*singileCommand++;
+      }
+    }
+    return result;
 }
 
-int joincommand(char* singleCommand,const char* functionaddress){
 
 
-return 0;
+
+
+char* resolveAddr(const char * originalStr){
+    char * result=(char*) malloc(64*sizeof (char));
+
+    int lastChar=']';
+    int isAddr=0;
+    int j=0;
+    for(int i=0;originalStr[i]!=lastChar;i++){
+        if(isAddr){
+            result[j++]=originalStr[i];
+            continue;
+        }
+        if(originalStr[i]=='['){
+            isAddr=1;
+        }
+    }
+    result[j]='\0';
+    return result;
 }
-
-char* retrievalAddr(const char* originalStr){
-static	char result [64];
-	int lastChar=']';
-	int isAddr=0;
-	int j=0;
-	for(int i=0;originalStr[i]!=lastChar;i++){
-		if(isAddr){
-			result[j++]=originalStr[i];
-			continue;
-		}
-		if(originalStr[i]=='['){
-			isAddr=1;			
-		}	
-	}
-	result[j]='\0';
-	return result;
-}
-
 
 static int is_leap_year_cyzi(time_t year) {
     if (year % 4) return 0;         /* A year not divisible by 4 is not leap. */
