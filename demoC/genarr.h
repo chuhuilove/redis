@@ -13,7 +13,7 @@
 void generIntArr(int *);
 
 void generCharArr_1(char (* result)[10]);
-void generCharArr_2(char *result[100]);
+void generCharArr_2(char (*result)[100]);
 
 
 void generTwoIntAtt(int (*ptr)[INR_ARR_COLS_LENGTH]);
