@@ -32,7 +32,7 @@ char *stacktrace[CHAR_ARR_MAX_LENGTH]={                  "src/redis-server(print
 
 const char *commands[CHAR_ARR_MAX_LENGTH];
 
-char * resolvedAddr;
+
 int commandLen=0;
 
 for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
