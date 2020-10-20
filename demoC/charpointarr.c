@@ -45,7 +45,7 @@ for(int i=CHAR_ARR_MAX_LENGTH-1,commandIndex=0;i>=0;i--,commandIndex++){
     printf(" resolved command is %s,commandBuf address:%p,resoledHexAddr address:%p\n",commandBuf,commandBuf,resoledHexAddr);
 
     char * tempCommands=commandBuf;
-    commands[commandIndex]=tempCommands;
+    commands++=tempCommands;
 }
     printf("this is debug");
    // char * command=buildCommand(commandLen,stack_num,commands);
