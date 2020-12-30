@@ -620,7 +620,7 @@ int ld2string(char *buf, size_t len, long double value, ld2string_mode mode) {
  * the uses a one way hash function in counter mode to generate a random
  * stream. However if /dev/urandom is not available, a weaker seed is used.
  *
- * This function is not thread safe, since the state is global. */
+ * 这个函数不是线程安全的,因为state是全局的. */
 void getRandomBytes(unsigned char *p, size_t len) {
     /* Global state. */
     static int seed_initialized = 0;
@@ -685,7 +685,7 @@ void getRandomBytes(unsigned char *p, size_t len) {
     }
 }
 
-/* Generate the Redis "Run ID", a SHA1-sized random number that identifies a
+/* 产生Redis "Run ID" Generate the Redis "Run ID", a SHA1-sized random number that identifies a
  * given execution of Redis, so that if you are talking with an instance
  * having run_id == A, and you reconnect and it has run_id == B, you can be
  * sure that it is either a different instance or it was restarted. */

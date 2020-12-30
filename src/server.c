@@ -57,7 +57,7 @@
 #include <locale.h>
 #include <sys/socket.h>
 
-/* Our shared "common" objects */
+/* 共享的"common"对象*/
 
 struct sharedObjectsStruct shared;
 
@@ -1099,7 +1099,7 @@ err:
     if (!log_to_stdout) close(fd);
 }
 
-/* Return the UNIX time in microseconds */
+/* 返回UNIX 微妙时间 Return the UNIX time in microseconds */
 long long ustime(void) {
     struct timeval tv;
     long long ust;
@@ -2284,6 +2284,9 @@ void createSharedObjects(void) {
     shared.maxstring = sdsnew("maxstring");
 }
 
+/*
+ * 初始化整个redis服务配置
+ */
 void initServerConfig(void) {
     int j;
 
@@ -4791,13 +4794,15 @@ void sendChildCOWInfo(int ptype, char *pname) {
 void memtest(size_t megabytes, int passes);
 
 /* 
- * 检查是否是哨兵模式
+ * 检查是否是哨兵模式,如果是哨兵模式,则返回1
+ * 第一个参数 是redis-sentinel 返回1
+ * 除却第一个参数之外,其他的参数中包含 --sentinel,返回1
  * Returns 1 if there is --sentinel among the arguments or if
  * argv[0] contains "redis-sentinel". */
 int checkForSentinelMode(int argc, char **argv) {
     int j;
-
     if (strstr(argv[0],"redis-sentinel") != NULL) return 1;
+
     for (j = 1; j < argc; j++)
         if (!strcmp(argv[j],"--sentinel")) return 1;
     return 0;
@@ -4844,8 +4849,7 @@ void loadDataFromDisk(void) {
 }
 
 void redisOutOfMemoryHandler(size_t allocation_size) {
-    serverLog(LL_WARNING,"Out Of Memory allocating %zu bytes!",
-        allocation_size);
+    serverLog(LL_WARNING,"Out Of Memory allocating %zu bytes!",allocation_size);
     serverPanic("Redis aborting for OUT OF MEMORY");
 }
 
@@ -4967,14 +4971,15 @@ int main(int argc, char **argv) {
 #endif
     setlocale(LC_COLLATE,"");
     tzset(); /* Populates 'timezone' global. */
+    // 设置默认的malloc的内存溢出处理器
     zmalloc_set_oom_handler(redisOutOfMemoryHandler);
     srand(time(NULL)^getpid());
     gettimeofday(&tv,NULL);
-
     uint8_t hashseed[16];
     getRandomBytes(hashseed,sizeof(hashseed));
     dictSetHashFunctionSeed(hashseed);
-	
+
+    // 检查是否为哨兵模式
     server.sentinel_mode = checkForSentinelMode(argc,argv);
 	extern int cyzi_sentinel_mode; 
 	cyzi_sentinel_mode=server.sentinel_mode;

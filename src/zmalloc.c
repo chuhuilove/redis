@@ -224,6 +224,12 @@ size_t zmalloc_used_memory(void) {
     return um;
 }
 
+/*
+ *
+ * 设置zmalloc的oom处理器,
+ * 这个函数接受的是一个函数指针.此函数的返回值为void,接受一个size_t作为参数
+ *
+ */
 void zmalloc_set_oom_handler(void (*oom_handler)(size_t)) {
     zmalloc_oom_handler = oom_handler;
 }
