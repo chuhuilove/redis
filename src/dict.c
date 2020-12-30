@@ -107,7 +107,7 @@ static void _dictReset(dictht *ht)
     ht->used = 0;
 }
 
-/* Create a new hash table */
+/* 创建新的hash表 */
 dict *dictCreate(dictType *type,
         void *privDataPtr)
 {

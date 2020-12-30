@@ -927,7 +927,7 @@ void ACLInitDefaultUser(void) {
     ACLSetUser(DefaultUser,"nopass",-1);
 }
 
-/* Initialization of the ACL subsystem. */
+/* 初始化ACL子系统Initialization of the ACL subsystem. */
 void ACLInit(void) {
     Users = raxNew();
     UsersToLoad = listCreate();

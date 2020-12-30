@@ -380,6 +380,9 @@ int aeProcessEvents(aeEventLoop *eventLoop, int flags)
 {
     int processed = 0, numevents;
 
+    cyziServerLog(CYZI_LL_WARNING,"ae.c->aeProcessEvents...loop ");
+
+
     /* Nothing to do? return ASAP */
     if (!(flags & AE_TIME_EVENTS) && !(flags & AE_FILE_EVENTS)) return 0;
 

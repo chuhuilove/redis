@@ -2291,8 +2291,10 @@ void initServerConfig(void) {
     int j;
 
     updateCachedTime(1);
+    // 设置redis的唯一id
     getRandomHexChars(server.runid,CONFIG_RUN_ID_SIZE);
     server.runid[CONFIG_RUN_ID_SIZE] = '\0';
+    // 设置replication id
     changeReplicationId();
     clearReplicationId2();
     server.hz = CONFIG_DEFAULT_HZ; /* Initialize it ASAP, even if it may get
@@ -2385,7 +2387,7 @@ void initServerConfig(void) {
     R_NegInf = -1.0/R_Zero;
     R_Nan = R_Zero/R_Zero;
 
-    /* Command table -- we initiialize it here as it is part of the
+    /* 命令表Command table -- we initiialize it here as it is part of the
      * initial configuration, since command names may be changed via
      * redis.conf using the rename-command directive. */
     server.commands = dictCreate(&commandTableDictType,NULL);
@@ -4589,7 +4591,8 @@ void linuxMemoryWarnings(void) {
 #endif /* __linux__ */
 
 void createPidFile(void) {
-    /* If pidfile requested, but no pidfile defined, use
+    /* 如果需要pidfile,但是pidfile没有定义，则使用默认pidfile路径
+     * If pidfile requested, but no pidfile defined, use
      * default pidfile path */
     if (!server.pidfile) server.pidfile = zstrdup(CONFIG_DEFAULT_PID_FILE);
 
@@ -5019,11 +5022,13 @@ int main(int argc, char **argv) {
         sds options = sdsempty();
         char *configfile = NULL;
 
-        /* Handle special options --help and --version */
-        if (strcmp(argv[1], "-v") == 0 ||
-            strcmp(argv[1], "--version") == 0) version();
-        if (strcmp(argv[1], "--help") == 0 ||
-            strcmp(argv[1], "-h") == 0) usage();
+        /* 处理指定的选项--help和--version*/
+        if (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0){
+            version();
+        }
+        if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1], "-h") == 0) {
+            usage();
+        }
         if (strcmp(argv[1], "--test-memory") == 0) {
             if (argc == 3) {
                 memtest(atoi(argv[2]),50);
@@ -5035,12 +5040,16 @@ int main(int argc, char **argv) {
             }
         }
 
-        /* First argument is the config file name? */
+        /* 第一个参数(redis-server是第0个参数)是配置文件名？First argument is the config file name? */
         if (argv[j][0] != '-' || argv[j][1] != '-') {
+            // 获取启动参数中配置文件的名称
             configfile = argv[j];
+            // 从配置文件中获取配置文件的绝对路径
             server.configfile = getAbsolutePath(configfile);
             /* Replace the config file in server.exec_argv with
              * its absolute path. */
+            // 之前将启动参数全部存储到这里了，由于指定了配置文件，
+            // 所以这里要将之前存储的配置文件的位置换成新解析出来的配置文件的绝对路径
             zfree(server.exec_argv[j]);
             server.exec_argv[j] = zstrdup(server.configfile);
             j++;
@@ -5051,6 +5060,7 @@ int main(int argc, char **argv) {
          * string "port 6380\n" to be parsed after the actual file name
          * is parsed, if any. */
         while(j != argc) {
+            // 解析所有启动参数
             if (argv[j][0] == '-' && argv[j][1] == '-') {
                 /* Option name */
                 if (!strcmp(argv[j], "--check-rdb")) {
@@ -5058,7 +5068,9 @@ int main(int argc, char **argv) {
                     j++;
                     continue;
                 }
-                if (sdslen(options)) options = sdscat(options,"\n");
+                if (sdslen(options)) {
+                    options = sdscat(options,"\n");
+                }
                 options = sdscat(options,argv[j]+2);
                 options = sdscat(options," ");
             } else {
@@ -5069,6 +5081,7 @@ int main(int argc, char **argv) {
             j++;
         }
         if (server.sentinel_mode && configfile && *configfile == '-') {
+            // 哨兵模式需要指定配置文件。。。。
             serverLog(LL_WARNING,
                 "Sentinel config from STDIN not allowed.");
             serverLog(LL_WARNING,
@@ -5103,6 +5116,7 @@ int main(int argc, char **argv) {
     initServer();
     if (background || server.pidfile) createPidFile();
     redisSetProcTitle(argv[0]);
+    // 打印redis log
     redisAsciiArt();
     checkTcpBacklogSettings();
 
@@ -5143,9 +5157,13 @@ int main(int argc, char **argv) {
 
     /* Warning the user about suspicious maxmemory setting. */
     if (server.maxmemory > 0 && server.maxmemory < 1024*1024) {
+        // 1024 byte=1Kb
+        // 1024 Kb=1Mb
+        // 这里判断可以使用的内存数量大于0，且小于1Mb
         serverLog(LL_WARNING,"WARNING: You specified a maxmemory value that is less than 1MB (current value is %llu bytes). Are you sure this is what you really want?", server.maxmemory);
     }
 
+    // 消息循环的创建。。。。。。
     aeSetBeforeSleepProc(server.el,beforeSleep);
     aeSetAfterSleepProc(server.el,afterSleep);
     aeMain(server.el);

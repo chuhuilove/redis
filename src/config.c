@@ -199,6 +199,9 @@ typedef struct typeInterface {
     void (*rewrite)(typeData data, const char *name, struct rewriteConfigState *state);
 } typeInterface;
 
+/*
+ * 标准配置
+ */
 typedef struct standardConfig {
     const char *name; /* The user visible name of this config */
     const char *alias; /* An alias that can also be used for this config */
@@ -535,6 +538,7 @@ loaderr:
 }
 
 /* Load the server configuration from the specified filename.
+ * 从指定的配置文件中加载服务的配置选项。
  * The function appends the additional configuration directives stored
  * in the 'options' string to the config file before loading.
  *

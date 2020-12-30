@@ -145,7 +145,8 @@ typedef long long ustime_t; /* 微秒时间类型. */
 
 #define LIMIT_PENDING_QUERYBUF (4*1024*1024) /* 4mb */
 
-/* When configuring the server eventloop, we setup it so that the total number
+/* 当配置server ebentloop时，
+ * When configuring the server eventloop, we setup it so that the total number
  * of file descriptors we can handle are server.maxclients + RESERVED_FDS +
  * a few more to stay safe. Since RESERVED_FDS defaults to 32, we add 96
  * in order to make sure of not over provisioning more than 128 fds. */
@@ -603,6 +604,9 @@ typedef struct RedisModuleDigest {
 #define OBJ_SHARED_REFCOUNT INT_MAX     /* Global object never destroyed. */
 #define OBJ_STATIC_REFCOUNT (INT_MAX-1) /* Object allocated in the stack. */
 #define OBJ_FIRST_SPECIAL_REFCOUNT OBJ_STATIC_REFCOUNT
+/*
+ * redis 对象
+ */
 typedef struct redisObject {
     unsigned type:4;
     unsigned encoding:4;
@@ -1033,9 +1037,9 @@ struct clusterState;
 struct redisServer {
     /* General */
     pid_t pid;                  /* Main process pid. */
-    char *configfile;           /* Absolute config file path, or NULL */
-    char *executable;           /* Absolute executable file path. */
-    char **exec_argv;           /* Executable argv vector (copy). */
+    char *configfile;           /* Absolute config file path, or NULL. 配置文件的绝对路径，可以是NULL*/
+    char *executable;           /* Absolute executable file path. 可执行文件的绝对路径*/
+    char **exec_argv;           /* Executable argv vector (copy). 启动redis-server时使用的参数，存储在这里*/
     int dynamic_hz;             /* Change hz value depending on # of clients. */
     int config_hz;              /* Configured HZ value. May be different than
                                    the actual 'hz' field value if dynamic-hz
@@ -1052,7 +1056,7 @@ struct redisServer {
     char *pidfile;              /* PID file path */
     int arch_bits;              /* 32 or 64 depending on sizeof(long) */
     int cronloops;              /* Number of times the cron function run */
-    char runid[CONFIG_RUN_ID_SIZE+1];  /* ID always different at every exec. 在每个exec中,ID总是不同的 */
+    char runid[CONFIG_RUN_ID_SIZE+1];  /* ID always different at every exec. 在每个exec中,ID总是不同的,一台服务器上可以运行n个redis实例，这些实例用runid来区分*/
     int sentinel_mode;          /* True if this instance is a Sentinel. */
     size_t initial_memory_usage; /* Bytes used after initialization. */
     int always_show_logo;       /* Show logo even for non-stdout logging. */
@@ -1067,7 +1071,7 @@ struct redisServer {
     pid_t module_child_pid;     /* PID of module child */
     /* Networking */
     int port;                   /* TCP listening port */
-    int tls_port;               /* TLS listening port */
+    int tls_port;               /* TLS listening port TLS监听端口*/
     int tcp_backlog;            /* TCP listen() backlog */
     char *bindaddr[CONFIG_BINDADDR_MAX]; /* Addresses we should bind to */
     int bindaddr_count;         /* Number of addresses in server.bindaddr[] */
@@ -1080,8 +1084,8 @@ struct redisServer {
     int sofd;                   /* Unix socket file descriptor */
     int cfd[CONFIG_BINDADDR_MAX];/* Cluster bus listening socket */
     int cfd_count;              /* Used slots in cfd[] */
-    list *clients;              /* List of active clients */
-    list *clients_to_close;     /* Clients to close asynchronously */
+    list *clients;              /* List of active clients 活跃的客户端*/
+    list *clients_to_close;     /* Clients to close asynchronously 异步关闭的客户端*/
     list *clients_pending_write; /* There is to write or install handler. */
     list *clients_pending_read;  /* Client has pending read socket buffers. */
     list *slaves, *monitors;    /* List of slaves and MONITORs */
@@ -1260,7 +1264,7 @@ struct redisServer {
     char *syslog_ident;             /* Syslog ident */
     int syslog_facility;            /* Syslog facility */
     /* Replication (master) */
-    char replid[CONFIG_RUN_ID_SIZE+1];  /* My current replication ID. */
+    char replid[CONFIG_RUN_ID_SIZE+1];  /* My current replication ID. 当前的replication id*/
     char replid2[CONFIG_RUN_ID_SIZE+1]; /* replid inherited from master*/
     long long master_repl_offset;   /* My current replication offset */
     long long master_repl_meaningful_offset; /* Offset minus latest PINGs. */
@@ -1324,8 +1328,8 @@ struct redisServer {
     list *clients_waiting_acks;         /* Clients waiting in WAIT command. */
     int get_ack_from_slaves;            /* If true we send REPLCONF GETACK. */
     /* Limits */
-    unsigned int maxclients;            /* Max number of simultaneous clients */
-    unsigned long long maxmemory;   /* Max number of memory bytes to use */
+    unsigned int maxclients;            /* Max number of simultaneous clients 同时连接的客户端数量？*/
+    unsigned long long maxmemory;   /* Max number of memory bytes to use 使用的最大内存字节数量*/
     int maxmemory_policy;           /* Policy for key eviction */
     int maxmemory_samples;          /* Pricision of random sampling */
     int lfu_log_factor;             /* LFU logarithmic counter factor. */
