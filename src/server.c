@@ -2521,6 +2521,7 @@ void adjustOpenFilesLimit(void) {
             /* Try to set the file limit to match 'maxfiles' or at least
              * to the higher value supported less than maxfiles. */
             bestlimit = maxfiles;
+            cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit execute loop start,bestlimit is:%d,oldlimit is:%d,maxfiles is:%d.",bestlimit,oldlimit,maxfiles);
             while(bestlimit > oldlimit) {
                 rlim_t decr_step = 16;
 
@@ -2538,7 +2539,7 @@ void adjustOpenFilesLimit(void) {
                 }
                 bestlimit -= decr_step;
             }
-
+            cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit execute loop end,bestlimit is:%d,oldlimit is:%d,maxfiles is:%d.",bestlimit,oldlimit,maxfiles);
             /* Assume that the limit we get initially is still valid if
              * our last try was even lower. */
             if (bestlimit < oldlimit) {
@@ -2630,6 +2631,8 @@ int listenToPort(int port, int *fds, int *count) {
     }
     for (j = 0; j < server.bindaddr_count || j == 0; j++) {
         if (server.bindaddr[j] == NULL) {
+            cyziServerLog(CYZI_LL_WARNING,"server.c#listenToPort,listen to port,server.bindaddr[%d] is %s,*count is:",j,server.bindaddr[j],*count);
+
             int unsupported = 0;
             /* Bind * for both IPv6 and IPv4, we enter here only if
              * server.bindaddr_count == 0. */
