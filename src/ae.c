@@ -60,6 +60,11 @@
     #endif
 #endif
 
+/**
+ * 创建消息循环
+ * @param setsize 文件描述符的个数
+ * @return
+ */
 aeEventLoop *aeCreateEventLoop(int setsize) {
     aeEventLoop *eventLoop;
     int i;
@@ -79,6 +84,7 @@ aeEventLoop *aeCreateEventLoop(int setsize) {
     eventLoop->beforesleep = NULL;
     eventLoop->aftersleep = NULL;
     eventLoop->flags = 0;
+    // 创建epoll或者select或其他的玩意,这里就是相当于多态吧
     if (aeApiCreate(eventLoop) == -1) goto err;
     /* Events with mask == AE_NONE are not set. So let's initialize the
      * vector with it. */

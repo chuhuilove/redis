@@ -45,6 +45,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include "redislog.h"
 
 #include "anet.h"
 
@@ -103,6 +104,7 @@ int anetKeepAlive(char *err, int fd, int interval)
     }
 
 #ifdef __linux__
+    // 只在linux下执行
     /* Default settings are more or less garbage, with the keepalive time
      * set to 7200 by default on Linux. Modify settings to make the feature
      * actually useful. */
@@ -478,6 +480,9 @@ static int anetV6Only(char *err, int s) {
 
 static int _anetTcpServer(char *err, int port, char *bindaddr, int af, int backlog)
 {
+
+    cyziServerLog(CYZI_LL_WARNING,"anet.c#_anetTcpServer. port is:%d,bindaddr is %s.",port,*bindaddr);
+
     int s = -1, rv;
     char _port[6];  /* strlen("65535") */
     struct addrinfo hints, *servinfo, *p;

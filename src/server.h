@@ -145,10 +145,13 @@ typedef long long ustime_t; /* 微秒时间类型. */
 
 #define LIMIT_PENDING_QUERYBUF (4*1024*1024) /* 4mb */
 
-/* 当配置server ebentloop时，
+/* 当配置server ebentloop时，可以处理的文件描述符总数为server.maxclients + RESERVED_FDS +a few more
+ * 以保持安全.
+ * 因为RESERVED_FDS默认值为32，因此我们添加96以确保不会过多地配置超过128个fds.
  * When configuring the server eventloop, we setup it so that the total number
  * of file descriptors we can handle are server.maxclients + RESERVED_FDS +
- * a few more to stay safe. Since RESERVED_FDS defaults to 32, we add 96
+ * a few more to stay safe.
+ * Since RESERVED_FDS defaults to 32, we add 96
  * in order to make sure of not over provisioning more than 128 fds. */
 #define CONFIG_FDSET_INCR (CONFIG_MIN_RESERVED_FDS+96)
 

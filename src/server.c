@@ -2611,16 +2611,19 @@ void checkTcpBacklogSettings(void) {
 int listenToPort(int port, int *fds, int *count) {
     int j;
 
+    cyziServerLog(CYZI_LL_WARNING,"server.c#listenToPort,listen to port,param port is:%d,fds is:%d,count is:%d",port,*fds,*count);
+
     /* Force binding of 0.0.0.0 if no bind address is specified, always
      * entering the loop if j == 0. */
-    if (server.bindaddr_count == 0) server.bindaddr[0] = NULL;
+    if (server.bindaddr_count == 0) {
+        server.bindaddr[0] = NULL;
+    }
     for (j = 0; j < server.bindaddr_count || j == 0; j++) {
         if (server.bindaddr[j] == NULL) {
             int unsupported = 0;
             /* Bind * for both IPv6 and IPv4, we enter here only if
              * server.bindaddr_count == 0. */
-            fds[*count] = anetTcp6Server(server.neterr,port,NULL,
-                server.tcp_backlog);
+            fds[*count] = anetTcp6Server(server.neterr,port,NULL,server.tcp_backlog);
             if (fds[*count] != ANET_ERR) {
                 anetNonBlock(NULL,fds[*count]);
                 (*count)++;
@@ -2647,12 +2650,10 @@ int listenToPort(int port, int *fds, int *count) {
             if (*count + unsupported == 2) break;
         } else if (strchr(server.bindaddr[j],':')) {
             /* Bind IPv6 address. */
-            fds[*count] = anetTcp6Server(server.neterr,port,server.bindaddr[j],
-                server.tcp_backlog);
+            fds[*count] = anetTcp6Server(server.neterr,port,server.bindaddr[j],server.tcp_backlog);
         } else {
             /* Bind IPv4 address. */
-            fds[*count] = anetTcpServer(server.neterr,port,server.bindaddr[j],
-                server.tcp_backlog);
+            fds[*count] = anetTcpServer(server.neterr,port,server.bindaddr[j],server.tcp_backlog);
         }
         if (fds[*count] == ANET_ERR) {
             serverLog(LL_WARNING,
@@ -2668,6 +2669,7 @@ int listenToPort(int port, int *fds, int *count) {
         anetNonBlock(NULL,fds[*count]);
         (*count)++;
     }
+
     return C_OK;
 }
 
@@ -2756,7 +2758,8 @@ void initServer(void) {
     createSharedObjects();
     adjustOpenFilesLimit();
 	cyziServerLog(CYZI_LL_WARNING,"start create event loop,maxclients:%d,CONFIG_FDSET_INCR:%d",server.maxclients,CONFIG_FDSET_INCR);
-		
+
+	// 消息循环
     server.el = aeCreateEventLoop(server.maxclients+CONFIG_FDSET_INCR);
     if (server.el == NULL) {
         serverLog(LL_WARNING,
