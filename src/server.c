@@ -2502,7 +2502,7 @@ void adjustOpenFilesLimit(void) {
     rlim_t maxfiles = server.maxclients+CONFIG_MIN_RESERVED_FDS;
     struct rlimit limit;
 
-    cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit maxfiles is:%d",maxfiles);
+    cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit maxfiles is:%d,server.maxclients=%d,CONFIG_MIN_RESERVED_FDS=%d.",maxfiles,server.maxclients,CONFIG_MIN_RESERVED_FDS);
 
     if (getrlimit(RLIMIT_NOFILE,&limit) == -1) {
         serverLog(LL_WARNING,"Unable to obtain the current NOFILE limit (%s), assuming 1024 and setting the max clients configuration accordingly.",
@@ -2766,6 +2766,8 @@ void initServer(void) {
     }
 
     createSharedObjects();
+
+    cyziServerLog(CYZI_LL_WARNING,"start adjust open files limit.");
     adjustOpenFilesLimit();
 	cyziServerLog(CYZI_LL_WARNING,"start create event loop,maxclients:%d,CONFIG_FDSET_INCR:%d",server.maxclients,CONFIG_FDSET_INCR);
 
