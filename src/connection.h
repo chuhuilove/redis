@@ -51,6 +51,9 @@ typedef enum {
 typedef void (*ConnectionCallbackFunc)(struct connection *conn);
 
 typedef struct ConnectionType {
+    // 连接类型，结构体
+    // ae_handler在这里是一个结构体中的成员，
+    // 这是一个函数指针，原型是 void funcationName(aeEventLoop * el,int fd,void * clientData,int mask);
     void (*ae_handler)(struct aeEventLoop *el, int fd, void *clientData, int mask);
     int (*connect)(struct connection *conn, const char *addr, int port, const char *source_addr, ConnectionCallbackFunc connect_handler);
     int (*write)(struct connection *conn, const void *data, size_t data_len);
@@ -67,6 +70,7 @@ typedef struct ConnectionType {
 } ConnectionType;
 
 struct connection {
+    // 一个具体的连接对象
     ConnectionType *type;
     ConnectionState state;
     short int flags;

@@ -243,6 +243,7 @@ static const char *connSocketGetLastError(connection *conn) {
 
 static void connSocketEventHandler(struct aeEventLoop *el, int fd, void *clientData, int mask)
 {
+    cyziServerLog(CYZI_LL_WARNING,"connection.c#connSocketEventHandler fd:%d,mask:%d.",fd,mask);
     UNUSED(el);
     UNUSED(fd);
     connection *conn = clientData;
