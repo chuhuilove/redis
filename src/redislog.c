@@ -24,7 +24,7 @@ void cyziServerLog(int loglevel,char * message,...){
 	   vsnprintf(msg, sizeof(msg), message, ap);
 	   va_end(ap);
 	
-	   cyziServerLogRaw(loglevel,msg);
+	  // cyziServerLogRaw(loglevel,msg);
 
 }
 
