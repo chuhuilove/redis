@@ -2611,7 +2611,7 @@ void checkTcpBacklogSettings(void) {
 int listenToPort(int port, int *fds, int *count) {
     int j;
 
-    cyziServerLog(CYZI_LL_WARNING,"server.c#listenToPort,listen to port,param port is:%d,fds is:%d,count is:%d",port,*fds,*count);
+    cyziServerLog(CYZI_LL_WARNING,"server.c#listenToPort,listen to port,param port is:%d.server.bindaddr_count is:%d.",port,server.bindaddr_count);
 
     /* Force binding of 0.0.0.0 if no bind address is specified, always
      * entering the loop if j == 0. */
