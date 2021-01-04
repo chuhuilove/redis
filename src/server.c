@@ -2631,7 +2631,7 @@ int listenToPort(int port, int *fds, int *count) {
     }
     for (j = 0; j < server.bindaddr_count || j == 0; j++) {
         if (server.bindaddr[j] == NULL) {
-            cyziServerLog(CYZI_LL_WARNING,"server.c#listenToPort,listen to port,server.bindaddr[%d] is %s,*count is:%d",j,server.bindaddr[j],*count);
+//            cyziServerLog(CYZI_LL_WARNING,"server.c#listenToPort,listen to port,server.bindaddr[%d] is %s,*count is:%d",j,server.bindaddr[j],*count);
 
             int unsupported = 0;
             /* Bind * for both IPv6 and IPv4, we enter here only if
