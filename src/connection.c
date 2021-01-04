@@ -29,6 +29,7 @@
 
 #include "server.h"
 #include "connhelpers.h"
+#include "redislog.h"
 
 /* The connections module provides a lean abstraction of network connections
  * to avoid direct socket and async event management across the Redis code base.
@@ -75,6 +76,8 @@ ConnectionType CT_Socket;
  */
 
 connection *connCreateSocket() {
+
+    cyziServerLog(CYZI_LL_WARNING,"connection.c#connCreateSocket create a new connect...");
     connection *conn = zcalloc(sizeof(connection));
     conn->type = &CT_Socket;
     conn->fd = -1;

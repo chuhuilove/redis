@@ -62,6 +62,7 @@
 struct aeEventLoop;
 
 /* 类型和数据结构Types and data structures */
+// aeFileProc,经过typedef,就变成了函数指针
 typedef void aeFileProc(struct aeEventLoop *eventLoop, int fd, void *clientData, int mask);
 typedef int aeTimeProc(struct aeEventLoop *eventLoop, long long id, void *clientData);
 typedef void aeEventFinalizerProc(struct aeEventLoop *eventLoop, void *clientData);
