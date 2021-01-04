@@ -526,6 +526,8 @@ int anetTcpServer(char *err, int port, char *bindaddr, int backlog)
 
 int anetTcp6Server(char *err, int port, char *bindaddr, int backlog)
 {
+    cyziServerLog(CYZI_LL_WARNING,"anet.c#anetTcp6Server. port is:%d,bindaddr is %s.",port,*bindaddr);
+
     return _anetTcpServer(err, port, bindaddr, AF_INET6, backlog);
 }
 
