@@ -33,7 +33,7 @@
 
 #include <fcntl.h>
 #include <sys/stat.h>
-
+#include "redislog.h"
 /*-----------------------------------------------------------------------------
  * Config file name-value maps.
  *----------------------------------------------------------------------------*/
@@ -2047,8 +2047,10 @@ static int updateAppendonly(int val, int prev, char **err) {
 
 static int updateMaxclients(long long val, long long prev, char **err) {
     /* Try to check if the OS is capable of supporting so many FDs. */
+    cyziServerLog(CYZI_LL_WARNING,"config.c#updateMaxclients,prev is:%ld,val is:%1d,maxclients is:%d,",prev,val,server.maxclients);
     if (val > prev) {
         adjustOpenFilesLimit();
+
         if (server.maxclients != val) {
             static char msg[128];
             sprintf(msg, "The operating system is not able to handle the specified number of clients, try with %d", server.maxclients);

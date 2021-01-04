@@ -2508,6 +2508,7 @@ void adjustOpenFilesLimit(void) {
         serverLog(LL_WARNING,"Unable to obtain the current NOFILE limit (%s), assuming 1024 and setting the max clients configuration accordingly.",
             strerror(errno));
         server.maxclients = 1024-CONFIG_MIN_RESERVED_FDS;
+        cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit server.maxclients is:%d", server.maxclients);
     } else {
         rlim_t oldlimit = limit.rlim_cur;
         cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit oldlimit is:%d",oldlimit);
@@ -2525,22 +2526,29 @@ void adjustOpenFilesLimit(void) {
 
                 limit.rlim_cur = bestlimit;
                 limit.rlim_max = bestlimit;
-                if (setrlimit(RLIMIT_NOFILE,&limit) != -1) break;
+                if (setrlimit(RLIMIT_NOFILE,&limit) != -1) {
+                    break;
+                }
                 setrlimit_error = errno;
 
                 /* We failed to set file limit to 'bestlimit'. Try with a
                  * smaller limit decrementing by a few FDs per iteration. */
-                if (bestlimit < decr_step) break;
+                if (bestlimit < decr_step) {
+                    break;
+                }
                 bestlimit -= decr_step;
             }
 
             /* Assume that the limit we get initially is still valid if
              * our last try was even lower. */
-            if (bestlimit < oldlimit) bestlimit = oldlimit;
+            if (bestlimit < oldlimit) {
+                bestlimit = oldlimit;
+            }
 
             if (bestlimit < maxfiles) {
                 unsigned int old_maxclients = server.maxclients;
                 server.maxclients = bestlimit-CONFIG_MIN_RESERVED_FDS;
+                cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit server.maxclients is:%d,bestlimit is:%ld,maxfiles is:%ld.", server.maxclients,bestlimit,maxfiles);
                 /* maxclients is unsigned so may overflow: in order
                  * to check if maxclients is now logically less than 1
                  * we test indirectly via bestlimit. */
