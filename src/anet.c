@@ -481,7 +481,7 @@ static int anetV6Only(char *err, int s) {
 static int _anetTcpServer(char *err, int port, char *bindaddr, int af, int backlog)
 {
 
-    cyziServerLog(CYZI_LL_WARNING,"anet.c#_anetTcpServer. port is:%d,bindaddr is %s.",port,*bindaddr);
+  //  cyziServerLog(CYZI_LL_WARNING,"anet.c#_anetTcpServer. port is:%d,bindaddr is %s.",port,*bindaddr);
 
     int s = -1, rv;
     char _port[6];  /* strlen("65535") */
@@ -526,7 +526,7 @@ int anetTcpServer(char *err, int port, char *bindaddr, int backlog)
 
 int anetTcp6Server(char *err, int port, char *bindaddr, int backlog)
 {
-    cyziServerLog(CYZI_LL_WARNING,"anet.c#anetTcp6Server. port is:%d,bindaddr is %s.",port,*bindaddr);
+    //cyziServerLog(CYZI_LL_WARNING,"anet.c#anetTcp6Server. port is:%d,bindaddr is %s.",port,*bindaddr);
 
     return _anetTcpServer(err, port, bindaddr, AF_INET6, backlog);
 }
