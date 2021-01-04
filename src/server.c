@@ -2502,13 +2502,15 @@ void adjustOpenFilesLimit(void) {
     rlim_t maxfiles = server.maxclients+CONFIG_MIN_RESERVED_FDS;
     struct rlimit limit;
 
+    cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit maxfiles is:%d",maxfiles);
+
     if (getrlimit(RLIMIT_NOFILE,&limit) == -1) {
         serverLog(LL_WARNING,"Unable to obtain the current NOFILE limit (%s), assuming 1024 and setting the max clients configuration accordingly.",
             strerror(errno));
         server.maxclients = 1024-CONFIG_MIN_RESERVED_FDS;
     } else {
         rlim_t oldlimit = limit.rlim_cur;
-
+        cyziServerLog(CYZI_LL_WARNING,"server.c#adjustOpenFilesLimit oldlimit is:%d",oldlimit);
         /* Set the max number of files if the current limit is not enough
          * for our needs. */
         if (oldlimit < maxfiles) {
@@ -4731,6 +4733,9 @@ void setupSignalHandlers(void) {
     sigaction(SIGINT, &act, NULL);
 
 #ifdef HAVE_BACKTRACE
+
+    cyziServerLog(CYZI_LL_WARNING,"server.c#setupSignalHandlers HAVE_BACKTRACE");
+
     sigemptyset(&act.sa_mask);
     act.sa_flags = SA_NODEFER | SA_RESETHAND | SA_SIGINFO;
     act.sa_sigaction = sigsegvHandler;
