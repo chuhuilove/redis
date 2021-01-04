@@ -5191,7 +5191,9 @@ int main(int argc, char **argv) {
     // 消息循环的创建。。。。。。
     aeSetBeforeSleepProc(server.el,beforeSleep);
     aeSetAfterSleepProc(server.el,afterSleep);
+    //
     aeMain(server.el);
+
     aeDeleteEventLoop(server.el);
     return 0;
 }

@@ -140,6 +140,7 @@ int aeResizeSetSize(aeEventLoop *eventLoop, int setsize) {
 }
 
 void aeDeleteEventLoop(aeEventLoop *eventLoop) {
+    cyziServerLog(CYZI_LL_WARNING, "aeDeleteEventLoop wait....,*eventLoop is:%d.", *eventLoop);
     aeApiFree(eventLoop);
     zfree(eventLoop->events);
     zfree(eventLoop->fired);
@@ -161,7 +162,7 @@ void aeStop(aeEventLoop *eventLoop) {
 int aeCreateFileEvent(aeEventLoop *eventLoop, int fd, int mask,
         aeFileProc *proc, void *clientData)
 {
-	cyziServerLog(CYZI_LL_WARNING,"ae.c->aeCreateFileEvent...create ");
+	cyziServerLog(CYZI_LL_WARNING,"ae.c#aeCreateFileEvent...create ");
 
     if (fd >= eventLoop->setsize) {
         errno = ERANGE;
@@ -381,12 +382,12 @@ static int processTimeEvents(aeEventLoop *eventLoop) {
  * the events that's possible to process without to wait are processed.
  * if flags has AE_CALL_AFTER_SLEEP set, the aftersleep callback is called.
  *
- * The function returns the number of events processed. */
+ * 该函数返回已处理事件的数量The function returns the number of events processed. */
 int aeProcessEvents(aeEventLoop *eventLoop, int flags)
 {
     int processed = 0, numevents;
 
-    cyziServerLog(CYZI_LL_WARNING,"ae.c->aeProcessEvents...loop ");
+//    cyziServerLog(CYZI_LL_WARNING,"ae.c->aeProcessEvents...loop ");
 
 
     /* Nothing to do? return ASAP */
@@ -534,6 +535,7 @@ int aeWait(int fd, int mask, long long milliseconds) {
 
 void aeMain(aeEventLoop *eventLoop) {
     eventLoop->stop = 0;
+    cyziServerLog(CYZI_LL_WARNING, "aeMain start, *eventLoop is:%d.", *eventLoop);
     while (!eventLoop->stop) {
         if (eventLoop->beforesleep != NULL)
             eventLoop->beforesleep(eventLoop);
