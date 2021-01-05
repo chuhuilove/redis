@@ -92,6 +92,8 @@ connection *connCreateSocket() {
  * invoked the connection-level accept handler.
  */
 connection *connCreateAcceptedSocket(int fd) {
+    cyziServerLog(CYZI_LL_WARNING,"connection.c#connCreateAcceptedSocket create connection object by fd:%d.",fd);
+
     connection *conn = connCreateSocket();
     conn->fd = fd;
     conn->state = CONN_STATE_ACCEPTING;

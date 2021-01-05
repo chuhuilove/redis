@@ -1787,6 +1787,7 @@ int processCommandAndResetClient(client *c) {
  * or because a client was blocked and later reactivated, so there could be
  * pending query buffer, already representing a full command, to process. */
 void processInputBuffer(client *c) {
+    cyziServerLog(CYZI_LL_WARNING,"networking.c#processInputBuffer process Input Buffer");
     /* Keep processing while there is something in the input buffer */
     while(c->qb_pos < sdslen(c->querybuf)) {
         /* Return if clients are paused. */
@@ -2800,7 +2801,9 @@ void pauseClients(mstime_t end) {
     server.clients_paused = 1;
 }
 
-/* Return non-zero if clients are currently paused. As a side effect the
+/* 返回非零,如果client已经暂停.
+ * Return non-zero if clients are currently paused.
+ * As a side effect the
  * function checks if the pause time was reached and clear it. */
 int clientsArePaused(void) {
     if (server.clients_paused &&

@@ -567,6 +567,7 @@ static int anetGenericAccept(char *err, int s, struct sockaddr *sa, socklen_t *l
 }
 
 int anetTcpAccept(char *err, int s, char *ip, size_t ip_len, int *port) {
+
     int fd;
     struct sockaddr_storage sa;
     socklen_t salen = sizeof(sa);
@@ -582,6 +583,7 @@ int anetTcpAccept(char *err, int s, char *ip, size_t ip_len, int *port) {
         if (ip) inet_ntop(AF_INET6,(void*)&(s->sin6_addr),ip,ip_len);
         if (port) *port = ntohs(s->sin6_port);
     }
+    cyziServerLog(CYZI_LL_WARNING,"anet.c#anetTcpAccept. s is:%d,ip is:%s,port is %d,fd is:%d.",s,*ip, *port,fd);
     return fd;
 }
 

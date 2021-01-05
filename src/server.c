@@ -2083,7 +2083,23 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
 /* This function gets called every time Redis is entering the
  * main loop of the event driven library, that is, before to sleep
  * for ready file descriptors. */
-void beforeSleep(struct aeEventLoop *eventLoop) {
+void
+beforeSleep(struct aeEventLoop *eventLoop) {
+//
+//    int maxfd;   /* 当前注册的最高文件描述符highest file descriptor currently registered */
+//    int setsize; /* max number of file descriptors tracked */
+//    long long timeEventNextId;
+//    time_t lastTime;     /* Used to detect system clock skew */
+//    aeFileEvent *events; /* 已注册的事件Registered events */
+//    aeFiredEvent *fired; /* Fired events */
+//    aeTimeEvent *timeEventHead;
+//    int stop;
+//    void *apidata; /* 专门给具体的实现使用的字段,之所以声明为void *, 是因为每个具体的实现所定义的结构体是不一样的 This is used for polling API specific data */
+//    aeBeforeSleepProc *beforesleep;
+//    aeBeforeSleepProc *aftersleep;
+//    int flags;
+
+    cyziServerLog(CYZI_LL_WARNING,"server.c#beforeSleep maxfd:%d.setsize:%d.",eventLoop->maxfd,eventLoop->setsize);
     UNUSED(eventLoop);
 
     /* Handle precise timeouts of blocked clients. */
@@ -2163,6 +2179,7 @@ void beforeSleep(struct aeEventLoop *eventLoop) {
  * API returned, and the control is going to soon return to Redis by invoking
  * the different events callbacks. */
 void afterSleep(struct aeEventLoop *eventLoop) {
+    cyziServerLog(CYZI_LL_WARNING,"server.c#afterSleep maxfd:%d.setsize:%d.",eventLoop->maxfd,eventLoop->setsize);
     UNUSED(eventLoop);
     if (moduleCount()) moduleAcquireGIL();
 }
@@ -2886,11 +2903,14 @@ void initServer(void) {
     cyziServerLog(CYZI_LL_WARNING,"server.c#initServer server.ipfd_count is:%d.",server.ipfd_count);
 
     for (j = 0; j < server.ipfd_count; j++) {
-        if (aeCreateFileEvent(server.el, server.ipfd[j], AE_READABLE,acceptTcpHandler,NULL) == AE_ERR)
-            {
-                serverPanic(
-                    "Unrecoverable error creating server.ipfd file event.");
-            }
+
+        int createRes = aeCreateFileEvent(server.el, server.ipfd[j], AE_READABLE, acceptTcpHandler, NULL);
+
+        if (createRes == AE_ERR) {
+            serverPanic("Unrecoverable error creating server.ipfd file event.");
+        } else {
+            cyziServerLog(CYZI_LL_WARNING,"server.c#initServer  server.ipfd[%d]:%d register acceptTcpHandler success.",j,server.ipfd[j]);
+        }
     }
     for (j = 0; j < server.tlsfd_count; j++) {
         if (aeCreateFileEvent(server.el, server.tlsfd[j], AE_READABLE,acceptTLSHandler,NULL) == AE_ERR)
@@ -4806,6 +4826,7 @@ int redisFork() {
 }
 
 void sendChildCOWInfo(int ptype, char *pname) {
+    cyziServerLog(CYZI_LL_WARNING,"server.c#sendChildCOWInfo.param ptype:%d,pname is:%s.",ptype,pname);
     size_t private_dirty = zmalloc_get_private_dirty(-1);
 
     if (private_dirty) {

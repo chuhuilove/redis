@@ -61,6 +61,7 @@
  */
 
 #include "server.h"
+#include "redislog.h"
 
 int serveClientBlockedOnList(client *receiver, robj *key, robj *dstkey, redisDb *db, robj *value, int where);
 
@@ -94,6 +95,7 @@ void blockClient(client *c, int btype) {
  * in order to process the pending input buffer of clients that were
  * unblocked after a blocking operation. */
 void processUnblockedClients(void) {
+    cyziServerLog(CYZI_LL_WARNING,"blocked.c#processUnblockedClients invoked");
     listNode *ln;
     client *c;
 

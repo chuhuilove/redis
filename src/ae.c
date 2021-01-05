@@ -69,7 +69,7 @@ aeEventLoop *aeCreateEventLoop(int setsize) {
     aeEventLoop *eventLoop;
     int i;
 
-	cyziServerLog(CYZI_LL_WARNING,"into aeCreateEventLoop,param is:%d",setsize);
+	cyziServerLog(CYZI_LL_WARNING,"ae.c#aeCreateEventLoop. into aeCreateEventLoop,param is:%d",setsize);
 
     if ((eventLoop = zmalloc(sizeof(*eventLoop))) == NULL) goto err;
     eventLoop->events = zmalloc(sizeof(aeFileEvent)*setsize);
@@ -161,7 +161,7 @@ void aeStop(aeEventLoop *eventLoop) {
 
 int aeCreateFileEvent(aeEventLoop *eventLoop, int fd, int mask,aeFileProc *proc, void *clientData)
 {
-	cyziServerLog(CYZI_LL_WARNING,"ae.c#aeCreateFileEvent...create ");
+	cyziServerLog(CYZI_LL_WARNING,"ae.c#aeCreateFileEvent. fd:%d,mask:%d. register funcation ",fd,mask);
 
     if (fd >= eventLoop->setsize) {
         errno = ERANGE;
@@ -534,7 +534,7 @@ int aeWait(int fd, int mask, long long milliseconds) {
 
 void aeMain(aeEventLoop *eventLoop) {
     eventLoop->stop = 0;
-    cyziServerLog(CYZI_LL_WARNING, "aeMain start, *eventLoop is:%d.", *eventLoop);
+    cyziServerLog(CYZI_LL_WARNING, "aeMain start,eventLoop maxfd is:%d. setsize is:%d,stop is:%d.flags is:%d.",eventLoop->maxfd,eventLoop->setsize,eventLoop->stop,eventLoop->flags);
     while (!eventLoop->stop) {
         if (eventLoop->beforesleep != NULL)
             eventLoop->beforesleep(eventLoop);
@@ -547,9 +547,11 @@ char *aeGetApiName(void) {
 }
 
 void aeSetBeforeSleepProc(aeEventLoop *eventLoop, aeBeforeSleepProc *beforesleep) {
+    cyziServerLog(CYZI_LL_WARNING,"ae.c#aeSetBeforeSleepProc set eventloop->beforesleep");
     eventLoop->beforesleep = beforesleep;
 }
 
 void aeSetAfterSleepProc(aeEventLoop *eventLoop, aeBeforeSleepProc *aftersleep) {
+    cyziServerLog(CYZI_LL_WARNING,"ae.c#aeSetAfterSleepProc set eventloop->aftersleep");
     eventLoop->aftersleep = aftersleep;
 }
