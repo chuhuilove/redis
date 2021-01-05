@@ -236,13 +236,16 @@ long long aeCreateTimeEvent(aeEventLoop *eventLoop, long long milliseconds,
         aeTimeProc *proc, void *clientData,
         aeEventFinalizerProc *finalizerProc)
 {
+    cyziServerLog(CYZI_LL_WARNING,"ae.c#aeCreateTimeEvent ");
+
     long long id = eventLoop->timeEventNextId++;
     aeTimeEvent *te;
 
     te = zmalloc(sizeof(*te));
     if (te == NULL) return AE_ERR;
     te->id = id;
-    aeAddMillisecondsToNow(milliseconds,&te->when_sec,&te->when_ms);
+    // 设置te->when_sec和te->when_ms
+    aeAddMillisecondsToNow(milliseconds,&(te->when_sec),&(te->when_ms));
     te->timeProc = proc;
     te->finalizerProc = finalizerProc;
     te->clientData = clientData;

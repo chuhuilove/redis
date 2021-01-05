@@ -1624,8 +1624,9 @@ void getExpansiveClientsInfo(size_t *in_usage, size_t *out_usage) {
     *out_usage = o;
 }
 
-/* This function is called by serverCron() and is used in order to perform
- * operations on clients that are important to perform constantly. For instance
+/* This function is called by serverCron() and is used in order to perform operations on clients that are important to perform constantly.
+ * 这个函数由serverCron()调用,用于在客户端上执行需要持续执行的重要操作.
+ * For instance
  * we use this function in order to disconnect clients after a timeout, including
  * clients blocked in some blocking command with a non-zero timeout.
  *
@@ -1645,7 +1646,7 @@ void clientsCron(void) {
      * per call. Since normally (if there are no big latency events) this
      * function is called server.hz times per second, in the average case we
      * process all the clients in 1 second. */
-    int numclients = listLength(server.clients);
+    int numclients = listLength(server.clients); // 获取客户端的数量
     int iterations = numclients/server.hz;
     mstime_t now = mstime();
 
@@ -1824,10 +1825,11 @@ void checkChildrenDone(void) {
 
 /* This is our timer interrupt, called server.hz times per second.
  * Here is where we do a number of things that need to be done asynchronously.
+ * 这是我们的计时器中断,称为每秒server.hz次.
+ * 在这里,我们做了许多需要异步完成的事情.
  * For instance:
  *
- * - Active expired keys collection (it is also performed in a lazy way on
- *   lookup).
+ * - Active expired keys collection (it is also performed in a lazy way on lookup).
  * - Software watchdog.
  * - Update some statistic.
  * - Incremental rehashing of the DBs hash tables.
@@ -1859,8 +1861,7 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
     /* Adapt the server.hz value to the number of configured clients. If we have
      * many clients, we want to call serverCron() with an higher frequency. */
     if (server.dynamic_hz) {
-        while (listLength(server.clients) / server.hz >
-               MAX_CLIENTS_PER_CLOCK_TICK)
+        while (listLength(server.clients) / server.hz > MAX_CLIENTS_PER_CLOCK_TICK)
         {
             server.hz *= 2;
             if (server.hz > CONFIG_MAX_HZ) {
@@ -1891,9 +1892,10 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
      * LRU_CLOCK_RESOLUTION define. */
     server.lruclock = getLRUClock();
 
-    /* Record the max memory used since the server was started. */
-    if (zmalloc_used_memory() > server.stat_peak_memory)
+    /* Record the max memory used since the server was started.记录服务器启动以来所使用的最大内存 */
+    if (zmalloc_used_memory() > server.stat_peak_memory){
         server.stat_peak_memory = zmalloc_used_memory();
+    }
 
     run_with_period(100) {
         /* Sample the RSS and other metrics here since this is a relatively slow call.
@@ -2893,7 +2895,11 @@ void initServer(void) {
 
     /* Create the timer callback, this is our way to process many background
      * operations incrementally, like clients timeout, eviction of unaccessed
-     * expired keys and so forth. */
+     * expired keys and so forth.
+     *
+     * 创建timer回调,这是我们逐步处理许多后台操作的方式,例如客户端超时,回首未访问的过期key等.
+     *
+     * */
     if (aeCreateTimeEvent(server.el, 1, serverCron, NULL, NULL) == AE_ERR) {
         serverPanic("Can't create event loop timers.");
         exit(1);

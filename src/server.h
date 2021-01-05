@@ -1135,7 +1135,7 @@ struct redisServer {
     long long stat_active_defrag_key_hits;  /* number of keys with moved allocations */
     long long stat_active_defrag_key_misses;/* number of keys scanned and not moved */
     long long stat_active_defrag_scanned;   /* number of dictEntries scanned */
-    size_t stat_peak_memory;        /* Max used memory record */
+    size_t stat_peak_memory;        /* Max used memory record 最大使用内存记录*/
     long long stat_fork_time;       /* Time needed to perform latest fork() */
     double stat_fork_rate;          /* Fork rate in GB/sec. */
     long long stat_rejected_conn;   /* Clients rejected because of maxclients */
@@ -1436,7 +1436,7 @@ struct redisServer {
     const char *assert_file;
     int assert_line;
     int bug_report_start; /* True if bug report header was already logged. */
-    int watchdog_period;  /* Software watchdog period in ms. 0 = off */
+    int watchdog_period;  /* Software watchdog period in ms. 0 = off 软件监督周期,值为0，就是关闭*/
     /* System hardware info */
     size_t system_memory_size;  /* Total memory in system as reported by OS */
     /* TLS Configuration */
