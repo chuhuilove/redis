@@ -789,7 +789,7 @@ typedef struct client {
                                the master. */
     size_t querybuf_peak;   /* Recent (100ms or more) peak of querybuf size. */
     int argc;               /* 当前命令的参数个数Num of arguments of current command. */
-    robj **argv;            /* Arguments of current command. */
+    robj **argv;            /* Arguments of current command. 当前命令参数 */
     struct redisCommand *cmd, *lastcmd;  /* Last command executed. */
     user *user;             /* User associated with this connection. If the
                                user is set to NULL the connection can do

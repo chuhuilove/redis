@@ -66,6 +66,10 @@ static int checkStringLength(client *c, long long size) {
 #define OBJ_SET_KEEPTTL (1<<4)     /* Set and keep the ttl */
 
 void setGenericCommand(client *c, int flags, robj *key, robj *val, robj *expire, int unit, robj *ok_reply, robj *abort_reply) {
+
+    cyziServerLog(CYZI_LL_WARNING,"t_string.c#setGenericCommand,client id is:%ld,",c->id);
+
+
     long long milliseconds = 0; /* initialized to avoid any harmness warning */
 
     if (expire) {
@@ -95,6 +99,7 @@ void setGenericCommand(client *c, int flags, robj *key, robj *val, robj *expire,
 
 /* SET key value [NX] [XX] [KEEPTTL] [EX <seconds>] [PX <milliseconds>] */
 void setCommand(client *c) {
+    cyziServerLog(CYZI_LL_WARNING,"t_string.c#setCommand client param count is:%d,client id is:%ld.",c->argc,c->id);
     int j;
     robj *expire = NULL;
     int unit = UNIT_SECONDS;
