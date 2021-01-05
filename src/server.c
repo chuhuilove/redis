@@ -1842,6 +1842,7 @@ void checkChildrenDone(void) {
  */
 
 int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
+    cyziServerLog(CYZI_LL_WARNING,"server.c#serverCron id:%ld.",id);
     int j;
     UNUSED(eventLoop);
     UNUSED(id);
@@ -3694,7 +3695,7 @@ int prepareForShutdown(int flags) {
     int save = flags & SHUTDOWN_SAVE;
     int nosave = flags & SHUTDOWN_NOSAVE;
 
-    serverLog(LL_WARNING,"User requested shutdown...");
+    cyziServerLog(CYZI_LL_WARNING,"User requested shutdown...");
     if (server.supervised_mode == SUPERVISED_SYSTEMD)
         redisCommunicateSystemd("STOPPING=1\n");
 
