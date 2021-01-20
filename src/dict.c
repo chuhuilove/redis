@@ -98,7 +98,7 @@ uint64_t dictGenCaseHashFunction(const unsigned char *buf, int len) {
 /* ----------------------------- API implementation ------------------------- */
 
 /* Reset a hash table already initialized with ht_init().
- * NOTE: This function should only be called by ht_destroy(). */
+ * NOTE: 这个函数只能被ht_destroy()调用.This function should only be called by ht_destroy(). */
 static void _dictReset(dictht *ht)
 {
     ht->table = NULL;
@@ -111,18 +111,37 @@ static void _dictReset(dictht *ht)
 dict *dictCreate(dictType *type,
         void *privDataPtr)
 {
+    /*分配一个dict对象,
+     *  dictType *type;
+     *  void *privdata;
+     * dictht ht[2];
+     * long rehashidx;
+     * unsigned long iterators;
+     * 里面都是垃圾数据
+     * */
     dict *d = zmalloc(sizeof(*d));
 
     _dictInit(d,type,privDataPtr);
     return d;
 }
 
-/* Initialize the hash table */
+/* 初始化hash表*/
 int _dictInit(dict *d, dictType *type,
         void *privDataPtr)
 {
-    _dictReset(&d->ht[0]);
-    _dictReset(&d->ht[1]);
+    /*
+     * dictht ht[2];
+     * &d->ht[0]和 d->ht[0]有什么区别呢？&的优先级吗？是从右到左进行运算
+     * 将&d->ht[0]作为参数，是为了给d->ht[0]赋值。
+     * &d->ht[0]<===>&(d->ht[0])
+     *
+     * */
+
+    dictht* firstHt=&(d->ht[0]);
+    dictht* secondHt=&(d->ht[0]);
+    _dictReset(firstHt);
+    _dictReset(secondHt);
+
     d->type = type;
     d->privdata = privDataPtr;
     d->rehashidx = -1;
