@@ -44,27 +44,35 @@
 /* Unused arguments generate annoying warnings... */
 #define DICT_NOTUSED(V) ((void) V)
 
+/**
+ * 相当于K,V
+ */
 typedef struct dictEntry {
-    void *key;
+    void *key; // 这是dict中的key
     union {
         void *val;
         uint64_t u64;
         int64_t s64;
         double d;
-    } v;
+    } v;   // 这是dict中的value
     struct dictEntry *next;
 } dictEntry;
 
 typedef struct dictType {
     uint64_t (*hashFunction)(const void *key);
-    void *(*keyDup)(void *privdata, const void *key);
+    void *(*keyDup)(void *privdata, const void *key); /* 函数指针,什么样的函数指针呢?
+ *                                                     * 带有两个参数且返回值为void*的指针,什么样的参数呢?两个参数的类型都是void*,
+                                                       * 函数原型为   void* function(void*,const void *) */
     void *(*valDup)(void *privdata, const void *obj);
     int (*keyCompare)(void *privdata, const void *key1, const void *key2);
     void (*keyDestructor)(void *privdata, void *key);
     void (*valDestructor)(void *privdata, void *obj);
 } dictType;
 
-/* This is our hash table structure. Every dictionary has two of this as we
+/* 这是hash表结构.
+ * 对于旧表到新表,当我们实现增量重新哈希处理时,每个字典都有两个.
+ *
+ * This is our hash table structure. Every dictionary has two of this as we
  * implement incremental rehashing, for the old to the new table. */
 typedef struct dictht {
     dictEntry **table;
@@ -77,7 +85,7 @@ typedef struct dict {
     dictType *type;
     void *privdata;
     dictht ht[2];
-    long rehashidx; /* rehashing not in progress if rehashidx == -1 */
+    long rehashidx; /* 如果rehashidx == -1,则当前dict就不属于rehashing状态 rehashing not in progress if rehashidx == -1 */
     unsigned long iterators; /* number of iterators currently running */
 } dict;
 
@@ -145,6 +153,11 @@ typedef void (dictScanBucketFunction)(void *privdata, dictEntry **bucketref);
 #define dictGetDoubleVal(he) ((he)->v.d)
 #define dictSlots(d) ((d)->ht[0].size+(d)->ht[1].size)
 #define dictSize(d) ((d)->ht[0].used+(d)->ht[1].used)
+/*
+ * 判断给定的hash table是否正在rehashing...
+ * 如果当前处于rehashing,则rehashidx!=-1
+ * 如果当前不处于rehashing,则则rehashidx==-1
+ */
 #define dictIsRehashing(d) ((d)->rehashidx != -1)
 
 /* API */

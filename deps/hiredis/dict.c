@@ -131,15 +131,17 @@ static int dictExpand(dict *ht, unsigned long size) {
     return DICT_OK;
 }
 
-/* Add an element to the target hash table */
+/* 添加元素到目标hash table*/
 static int dictAdd(dict *ht, void *key, void *val) {
     int index;
     dictEntry *entry;
 
     /* Get the index of the new element, or -1 if
      * the element already exists. */
-    if ((index = _dictKeyIndex(ht, key)) == -1)
+    if ((index = _dictKeyIndex(ht, key)) == -1){
         return DICT_ERR;
+    }
+
 
     /* Allocates the memory and stores key */
     entry = malloc(sizeof(*entry));

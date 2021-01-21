@@ -135,7 +135,7 @@ int _dictInit(dict *d, dictType *type,
      * 将&d->ht[0]作为参数，是为了给d->ht[0]赋值。
      * &d->ht[0]<===>&(d->ht[0])
      *
-     * */
+     */
 
     dictht* firstHt=&(d->ht[0]);
     dictht* secondHt=&(d->ht[0]);
@@ -206,7 +206,10 @@ int dictExpand(dict *d, unsigned long size)
  * work it does would be unbound and the function may block for a long time. */
 int dictRehash(dict *d, int n) {
     int empty_visits = n*10; /* Max number of empty buckets to visit. */
-    if (!dictIsRehashing(d)) return 0;
+    if (!dictIsRehashing(d)){
+        // 如果处于rehashing,则返回
+        return 0;
+    }
 
     while(n-- && d->ht[0].used != 0) {
         dictEntry *de, *nextde;
@@ -280,7 +283,7 @@ static void _dictRehashStep(dict *d) {
     if (d->iterators == 0) dictRehash(d,1);
 }
 
-/* Add an element to the target hash table */
+/* 添加元素到目标hash table */
 int dictAdd(dict *d, void *key, void *val)
 {
     dictEntry *entry = dictAddRaw(d,key,NULL);
@@ -314,10 +317,15 @@ dictEntry *dictAddRaw(dict *d, void *key, dictEntry **existing)
     dictEntry *entry;
     dictht *ht;
 
-    if (dictIsRehashing(d)) _dictRehashStep(d);
+    if (dictIsRehashing(d)){
+        // 如果给定的dict处于rehashing,
+        _dictRehashStep(d);
+    }
 
     /* Get the index of the new element, or -1 if
-     * the element already exists. */
+     * the element already exists.
+     * 获取新元素的index,如果元素已经存在,而返回-1
+     * */
     if ((index = _dictKeyIndex(d, key, dictHashKey(d,key), existing)) == -1)
         return NULL;
 
@@ -1014,7 +1022,9 @@ static long _dictKeyIndex(dict *d, const void *key, uint64_t hash, dictEntry **e
 {
     unsigned long idx, table;
     dictEntry *he;
-    if (existing) *existing = NULL;
+    if (existing) {
+        *existing = NULL;
+    }
 
     /* Expand the hash table if needed */
     if (_dictExpandIfNeeded(d) == DICT_ERR)

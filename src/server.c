@@ -77,17 +77,17 @@ volatile unsigned long lru_clock; /* Server global current LRU time. */
 
 /* 命令表.
  *
- * 每个条目都由下面的几个字段组成:
+ * 每个item都由下面的几个字段组成:
  *
  * name:        表示命令名称的字符串.
  *
  * function:    指向实现命令的C函数的指针.
  *
- * arity:       参数个数, it is possible to use -N to say >= N
+ * arity:       参数个数,可以使用-N表示>=N it is possible to use -N to say >= N
  *
- * sflags:      Command flags as string. See below for a table of flags.
+ * sflags:      Command flags as string. 参见下面的标志表.See below for a table of flags.
  *
- * flags:       Flags as bitmask. Computed by Redis using the 'sflags' field.
+ * flags:       位掩码标志.Redis使用'sflags'字段进行计算.Flags as bitmask. Computed by Redis using the 'sflags' field.
  *
  * get_keys_proc: An optional function to get key arguments from a command.
  *                This is only used when the following three fields are not
@@ -115,7 +115,7 @@ volatile unsigned long lru_clock; /* Server global current LRU time. */
  *
  * This is the meaning of the flags:
  *
- * write:       Write command (may modify the key space).
+ * write:       写命令(可以修改key space)Write command (may modify the key space).
  *
  * read-only:   All the non special commands just reading from keys without
  *              changing the content, or returning other informations like
@@ -187,11 +187,10 @@ struct redisCommand redisCommandTable[] = {
 
     {"get",getCommand,2,"read-only fast @string",0,NULL,1,1,1,0,0,0},
 
-    /* Note that we can't flag set as fast, since it may perform an
-     * implicit DEL of a large key. */
-    {"set",setCommand,-3,
-     "write use-memory @string",
-     0,NULL,1,1,1,0,0,0},
+    /* Note that we can't flag set as fast, since it may perform an implicit DEL of a large key.
+     * 注意,我们不能把set标记为fast,因为它可能会隐式地DEL庞大的key.
+     * */
+    {"set",setCommand,-3,"write use-memory @string",0,NULL,1,1,1,0,0,0},
 
     {"setnx",setnxCommand,3,
      "write use-memory fast @string",
@@ -1872,6 +1871,7 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
     }
 
     run_with_period(100) {
+        // 每100ms 运行一次
         trackInstantaneousMetric(STATS_METRIC_COMMAND,server.stat_numcommands);
         trackInstantaneousMetric(STATS_METRIC_NET_INPUT,
                 server.stat_net_input_bytes);
@@ -1928,6 +1928,7 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
     /* We received a SIGTERM, shutting down here in a safe way, as it is
      * not ok doing so inside the signal handler. */
     if (server.shutdown_asap) {
+        // 接收到SIGTERM,
         if (prepareForShutdown(SHUTDOWN_NOFLAGS) == C_OK) exit(0);
         serverLog(LL_WARNING,"SIGTERM received but errors trying to shut down the server, check the logs for more information");
         server.shutdown_asap = 0;
@@ -1951,6 +1952,7 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
     /* Show information about connected clients */
     if (!server.sentinel_mode) {
         run_with_period(5000) {
+            // 每5000ms
             serverLog(LL_DEBUG,
                 "%lu clients connected (%lu replicas), %zu bytes in use",
                 listLength(server.clients)-listLength(server.slaves),
@@ -1959,10 +1961,10 @@ int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) {
         }
     }
 
-    /* We need to do a few operations on clients asynchronously. */
+    /* 我们需要在客户端上异步地执行一些操作.We need to do a few operations on clients asynchronously. */
     clientsCron();
 
-    /* Handle background operations on Redis databases. */
+    /* 处理Redis数据库的后台操作Handle background operations on Redis databases. */
     databasesCron();
 
     /* Start a scheduled AOF rewrite if this was requested by the user while

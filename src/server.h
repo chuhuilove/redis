@@ -435,9 +435,11 @@ typedef long long ustime_t; /* 微秒时间类型. */
 /* Get the first bind addr or NULL */
 #define NET_FIRST_BIND_ADDR (server.bindaddr_count ? server.bindaddr[0] : NULL)
 
-/* Using the following macro you can run code inside serverCron() with the
- * specified period, specified in milliseconds.
- * The actual resolution depends on server.hz. */
+/* Using the following macro you can run code inside serverCron() with the specified period, specified in milliseconds.
+ * The actual resolution depends on server.hz.
+ * 使用下面的宏,就可以在serverCron()中以指定的周期(以毫秒为单位)运行代码.
+ * 实际的周期依赖于server.hz.
+ * */
 #define run_with_period(_ms_) if ((_ms_ <= 1000/server.hz) || !(server.cronloops%((_ms_)/(1000/server.hz))))
 
 /* We can print the stacktrace, so our assert is defined this way: */
@@ -657,7 +659,7 @@ typedef struct redisDb {
     dict *blocking_keys;        /* Keys with clients waiting for data (BLPOP)*/
     dict *ready_keys;           /* Blocked keys that received a PUSH */
     dict *watched_keys;         /* WATCHED keys for MULTI/EXEC CAS */
-    int id;                     /* Database ID */
+    int id;                     /* 数据库id Database ID */
     long long avg_ttl;          /* Average TTL, just for stats */
     unsigned long expires_cursor; /* Cursor of the active expire cycle. */
     list *defrag_later;         /* List of key names to attempt to defrag one by one, gradually. */
@@ -778,7 +780,7 @@ typedef struct user {
 typedef struct client {
     uint64_t id;            /* Client自增唯一ID. */
     connection *conn;
-    int resp;               /* RESP protocol version. Can be 2 or 3. */
+    int resp;               /* 响应协议版本.可以是2或3.RESP protocol version. Can be 2 or 3. */
     redisDb *db;            /* Pointer to currently SELECTed DB. */
     robj *name;             /* As set by CLIENT SETNAME. */
     sds querybuf;           /* 用于累积客户端查询的缓冲区Buffer we use to accumulate client queries. */
@@ -1454,8 +1456,8 @@ typedef struct pubsubPattern {
 typedef void redisCommandProc(client *c);
 typedef int *redisGetKeysProc(struct redisCommand *cmd, robj **argv, int argc, int *numkeys);
 struct redisCommand {
-    char *name;
-    redisCommandProc *proc;
+    char *name;      /*命令名称字符串*/
+    redisCommandProc *proc; /*函数指针,接收的一个参数是client* */
     int arity;
     char *sflags;   /* Flags as string representation, one char per flag. */
     uint64_t flags; /* The actual flags, obtained from the 'sflags' field. */

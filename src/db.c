@@ -30,7 +30,7 @@
 #include "server.h"
 #include "cluster.h"
 #include "atomicvar.h"
-
+#include "redislog.h"
 #include <signal.h>
 #include <ctype.h>
 
@@ -53,6 +53,7 @@ void updateLFU(robj *val) {
  * implementations that should instead rely on lookupKeyRead(),
  * lookupKeyWrite() and lookupKeyReadWithFlags(). */
 robj *lookupKey(redisDb *db, robj *key, int flags) {
+    cyziServerLog(CYZI_LL_WARNING, "db.c#lookupKey, database->id:%d,key->ptr:%s",db->id,key->ptr);
     dictEntry *de = dictFind(db->dict,key->ptr);
     if (de) {
         robj *val = dictGetVal(de);
@@ -172,7 +173,8 @@ robj *lookupKeyWriteOrReply(client *c, robj *key, robj *reply) {
     return o;
 }
 
-/* Add the key to the DB. It's up to the caller to increment the reference
+/* 添加key到DB.
+ * Add the key to the DB. It's up to the caller to increment the reference
  * counter of the value if needed.
  *
  * The program is aborted if the key already exists. */
